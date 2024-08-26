@@ -1,3 +1,174 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body{
+  font-family: 'Poppins', sans-serif;
+}
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222.2 84% 4.9%;
+    --radius: 0.5rem;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+
+  }
+}
+
+.calendar {
+  @apply text-center;
+}
+
+
+
+
+/* Calendar.css */
+
+
+
+/* Calendar.css */
+
+.custom-calendar {
+  /* Define CSS variables for react-day-picker */
+  --rdp-accent-color: #007bff; /* Example accent color */
+  --rdp-accent-background-color: #e0f0ff;
+  --rdp-font-family: 'Poppins, sans-serif';
+  --rdp-day-font: 'Poppins, sans-serif';
+
+  --rdp-chevron-disabled-opacity: 0.5;
+  --rdp-day_button-border-radius: 4px;
+  --rdp-day_button-border: 1px solid #ddd;
+
+  --rdp-selected-border: 2px solid #007bff;
+  --rdp-selected-font: bold;
+  --rdp-disabled-opacity: ;
+  --rdp-outside-opacity: 0.8;
+  --rdp-today-color: blue;
+
+  --rdp-months-gap: 16px;
+  --rdp-nav_button-disabled-opacity: 0.5;
+  --rdp-range_middle-background-color: #cce5ff;
+  --rdp-range_middle-font: 'Arial, sans-serif';
+  --rdp-range_middle-foreground-color: #007bff;
+  --rdp-range_start-color: #007bff;
+  --rdp-range_start-background: #e0f0ff;
+  --rdp-range_start-date-background-color: #cce5ff;
+  --rdp-range_end-background: #e0f0ff;
+  --rdp-range_end-color: #007bff;
+  --rdp-range_end-date-background-color: #cce5ff;
+  --rdp-week_number-border-radius: 4px;
+  --rdp-week_number-border: 1px solid #ddd;
+  --rdp-week_number-font: 'Arial, sans-serif';
+  --rdp-week_number-height: 40px;
+  --rdp-week_number-width: 40px;
+  --rdp-weekday-font: 'Arial, sans-serif';
+  --rdp-weekday-opacity: 1;
+  --rdp-weekday-padding: 8px;
+  --rdp-weekday-text-align: center;
+}
+
+
+.custom-calendar .rdp-day:nth-child(7) {
+  color: red;
+}
+
+
+/* Optional: Additional responsiveness for DayPicker elements */
+.custom-calendar .rdp {
+  width: 100%;
+  height: 100%;
+}
+
+.custom-calendar .rdp-months {
+  display: flex;
+  flex-direction: column;
+}
+
+.custom-calendar .rdp-month {
+  width: 100%;
+}
+
+/* Responsive day sizes */
+@media (max-width: 640px) { /* Small screens */
+  .custom-calendar {
+    --rdp-day-height: 30px;
+    --rdp-day-width: 55px;
+    --rdp-weekday-padding: 4px;
+    --rdp-month_caption-font: 'Arial, sans-serif';
+    --rdp-weekday-font: 'Arial, sans-serif';
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) { /* Medium screens */
+  .custom-calendar {
+    --rdp-day-height: 35px;
+    --rdp-day-width: 35px;
+    --rdp-weekday-padding: 6px;
+  }
+}
+
+@media (min-width: 1025px) { /* Large screens */
+  .custom-calendar {
+    --rdp-day-height: 40px;
+    --rdp-day-width: 40px;
+    --rdp-weekday-padding: 8px;
+  }
+}
