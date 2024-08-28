@@ -1,11 +1,15 @@
 import axios from "axios";
 
 const ApiInstance = (headers: { "Content-Type": string }) => {
+  const token = localStorage.getItem("token"); // Retrieve the token from local storage
+
   return axios.create({
-    baseURL: "",
+    baseURL: `${import.meta.env.VITE_SERVER_URL}`,
     timeout: 5000,
-    headers,
-    withCredentials: true,
+    headers: {
+      ...headers,
+      Authorization: token ? `Bearer ${token}` : "", 
+    },
   });
 };
 

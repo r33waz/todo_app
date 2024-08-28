@@ -8,28 +8,47 @@ import CompletedTask from "./pages/completed";
 import PagenotFound from "./auth/pagenotFound";
 import Weather from "./components/weather";
 import Calender from "./components/calender";
+import Login from "./auth/login";
+import Signup from "./auth/signup";
+
+const routesWithSideNav = [
+  { path: "/home", element: <Home /> },
+  { path: "/todays", element: <TodayTask /> },
+  { path: "/upcoming", element: <UpComingTask /> },
+  { path: "/important", element: <ImportantTask /> },
+  { path: "/completed", element: <CompletedTask /> },
+];
 
 function App() {
   return (
-    <>
-      <div className="flex  w-full md:flex-row flex-col">
-        <SideNav />
-        <div className="flex w-full justify-between h-screen  md:flex-row flex-col  border ">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/todays" element={<TodayTask />} />
-            <Route path="/upcoming" element={<UpComingTask />} />
-            <Route path="/important" element={<ImportantTask />} />
-            <Route path="/completed" element={<CompletedTask />} />
-            <Route path="*" element={<PagenotFound />} />
-          </Routes>
-          <div className="grid grid-cols-1  md:w-96 w-full gap-3">
-            <Weather />
-            <Calender />
-          </div>
-        </div>
-      </div>
-    </>
+    <Routes>
+      {/* Routes that do not include SideNav, Weather, and Calendar */}
+      <Route path="/" element={<Login />} />
+      <Route path="/signup" element={<Signup />} />
+      
+      {/* Routes that include SideNav, Weather, and Calendar */}
+      {routesWithSideNav.map(({ path, element }) => (
+        <Route
+          key={path}
+          path={path}
+          element={
+            <div className="flex w-full md:flex-row flex-col">
+              <SideNav />
+              <div className="flex w-full justify-between h-screen md:flex-row flex-col border">
+                <div className="flex-grow p-4">{element}</div>
+                <div className="grid grid-cols-1 md:w-80 w-full gap-3 ">
+                  <Weather />
+                  <Calender />
+                </div>
+              </div>
+            </div>
+          }
+        />
+      ))}
+      
+      {/* Catch-all route */}
+      <Route path="*" element={<PagenotFound />} />
+    </Routes>
   );
 }
 

@@ -159,7 +159,7 @@ body{
 
 @media (min-width: 641px) and (max-width: 1024px) { /* Medium screens */
   .custom-calendar {
-    --rdp-day-height: 35px;
+    --rdp-day-height: 100px;
     --rdp-day-width: 35px;
     --rdp-weekday-padding: 6px;
   }

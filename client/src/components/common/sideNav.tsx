@@ -3,7 +3,7 @@ import { Sidebar, SidebarBody, SidebarLink } from "../ui/sidebar";
 function SideNav() {
   const Links = [
     {
-      href: "/",
+      href: "/home",
       label: "Home",
       icon: (
         <svg

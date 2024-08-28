@@ -11,7 +11,7 @@ export const weatherInfo = createAsyncThunk(
           city ? city : "kathmandu"
         }&units=metric&appid=${import.meta.env.VITE_WEATHER_API}`
       );
-      return resp.data;
+        return resp.data;
     } catch (error) {
       console.log(error);
     }
