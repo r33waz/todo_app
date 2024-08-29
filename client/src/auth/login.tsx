@@ -289,7 +289,7 @@ function Login() {
             Login with Google
           </Button> */}
           <div className="mt-3 text-xs border-b border-gray-500 py-5 playfair tooltip text-white">
-            <Link to="">Forget password?</Link>
+            <Link to="/forgetpassword">Forget password?</Link>
           </div>
 
           <div className="mt-4 text-xs flex justify-between items-center container-mr">

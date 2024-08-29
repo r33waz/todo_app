@@ -10,6 +10,7 @@ import Weather from "./components/weather";
 import Calender from "./components/calender";
 import Login from "./auth/login";
 import Signup from "./auth/signup";
+import Forgetpasword from "./auth/forgetpasword";
 
 const routesWithSideNav = [
   { path: "/home", element: <Home /> },
@@ -25,7 +26,7 @@ function App() {
       {/* Routes that do not include SideNav, Weather, and Calendar */}
       <Route path="/" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
-      
+      <Route path="/forgetpassword" element={<Forgetpasword />} />
       {/* Routes that include SideNav, Weather, and Calendar */}
       {routesWithSideNav.map(({ path, element }) => (
         <Route
@@ -45,7 +46,7 @@ function App() {
           }
         />
       ))}
-      
+
       {/* Catch-all route */}
       <Route path="*" element={<PagenotFound />} />
     </Routes>

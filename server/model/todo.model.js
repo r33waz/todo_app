@@ -17,18 +17,38 @@ const TodoSchema = new mongoose.Schema({
   status: {
     type: String,
     required: true,
+    default: "Pending",
   },
   date: {
     type: Date,
+    default: () => {
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = String(now.getMonth() + 1).padStart(2, "0");
+      const day = String(now.getDate()).padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    },
     required: true,
   },
   time: {
     type: String,
     required: true,
+    default: function () {
+      return new Date().toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+    },
+  },
+  important: {
+    type: Boolean,
+    required: true,
+    default: false,
   },
   completed: {
     type: Boolean,
     required: true,
+    default: false,
   },
 });
 
