@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
 import { weatherInfo } from "../rtk/weatherThunk/weatherThunk";
 import { useAppDispatch, useAppSelector } from "../hooks/hooks";
-import TodayDate from "./common/Date";
+import TodayDate from "../components/common/date";
 
 function Weather() {
   const [city, setCity] = useState<string>("");
   const dispatch = useAppDispatch();
   const { data, weatherLoading } = useAppSelector((state) => state.weather);
-  console.log("weather", data);
 
   useEffect(() => {
     dispatch(weatherInfo({ city }));

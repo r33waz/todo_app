@@ -6,7 +6,6 @@ import { format} from "date-fns";
 function Calendar() {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
 const [formattedDate, setFormattedDate] = useState<string | undefined>(undefined);
-console.log("formattedDate",formattedDate)
 const handleDayPickerSelect = (date: Date | undefined) => {
   if (!date) {
     setSelectedDate(undefined);

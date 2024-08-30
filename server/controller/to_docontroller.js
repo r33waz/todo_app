@@ -2,7 +2,7 @@ import ToDo from "../model/todo.model.js";
 
 export const CreateTodo = async (req, res) => {
   try {
-    const { userId, title, description } = req.body;
+    const { userId, title, description, date } = req.body;
     if (!userId) {
       return res.status(400).json({
         success: false,
@@ -28,6 +28,7 @@ export const CreateTodo = async (req, res) => {
       userId,
       title,
       description,
+      date,
     });
 
     await newTodo.save();

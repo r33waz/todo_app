@@ -16,10 +16,24 @@ export interface UserData {
   isLoading: boolean;
   isError: boolean;
   isSuccess: boolean;
+  singleUserLoading: boolean;
+  singleUserError: boolean;
+  updateLoading: boolean;
+  updateError: boolean;
+  updateSuccess: boolean;
 }
 
 export interface UserInfo {
+  _id: string;
   email: string;
   token: string;
   username: string;
+}
+
+
+export interface UpdateData {
+  username: string;
+  email: string;
+  password: string;
+  newpassword: string;
 }

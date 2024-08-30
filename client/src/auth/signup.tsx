@@ -68,7 +68,6 @@ function Signup() {
             onSubmit={handleSubmit(OnSubmit)}
             className="flex flex-col gap-4"
           >
-            {" "}
             <div className="flex flex-col gap-1">
               <input
                 id="username"

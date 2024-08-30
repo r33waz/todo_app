@@ -102,7 +102,7 @@ function SideNav() {
     },
   ];
   return (
-      <div className="h-fit md:w-fit w-full  border border-red-500 md:h-screen">
+      <div className=" md:w-fit w-full  ">
         <Sidebar>
           <SidebarBody>
             {Links.map((link, index) => (

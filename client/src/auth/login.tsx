@@ -36,11 +36,11 @@ function Login() {
     dispatch(LoginThunk(data));
   };
 
-  // useEffect(() => {
-  //   if (isSuccess) {
-  //     navigate("/home");
-  //   }
-  // }, [isSuccess, navigate]);
+  useEffect(() => {
+    if (isSuccess) {
+      navigate("/home");
+    }
+  }, [isSuccess, navigate]);
 
   return (
     <section className="bg-gray-100 min-h-screen flex box-border justify-center items-center">

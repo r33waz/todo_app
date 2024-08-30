@@ -14,7 +14,9 @@ import { authenticate } from "../middleware/authmidleware.js";
 
 const router = express.Router();
 
-router.post("/createTodo", authenticate, CreateTodo);
+router.post("/createTodo", 
+  // authenticate, 
+  CreateTodo);
 router.delete("/deleteTodo", DeleteTodo);
 router.get("/all_todo", GetAllTodo);
 router.patch("/update-todo/:id", UpdateTodo);

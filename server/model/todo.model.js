@@ -28,7 +28,6 @@ const TodoSchema = new mongoose.Schema({
       const day = String(now.getDate()).padStart(2, "0");
       return `${year}-${month}-${day}`;
     },
-    required: true,
   },
   time: {
     type: String,

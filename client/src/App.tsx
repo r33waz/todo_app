@@ -5,12 +5,14 @@ import TodayTask from "./pages/today";
 import UpComingTask from "./pages/upComing";
 import ImportantTask from "./pages/important";
 import CompletedTask from "./pages/completed";
-import PagenotFound from "./auth/pagenotFound";
 import Weather from "./components/weather";
 import Calender from "./components/calender";
+import ProfileEidit from "./pages/profileEidit";
+import Header from "./components/common/header";
 import Login from "./auth/login";
 import Signup from "./auth/signup";
 import Forgetpasword from "./auth/forgetpasword";
+import PagenotFound from "./auth/pagenotFound";
 
 const routesWithSideNav = [
   { path: "/home", element: <Home /> },
@@ -18,6 +20,7 @@ const routesWithSideNav = [
   { path: "/upcoming", element: <UpComingTask /> },
   { path: "/important", element: <ImportantTask /> },
   { path: "/completed", element: <CompletedTask /> },
+  { path: "/profile", element: <ProfileEidit /> },
 ];
 
 function App() {
@@ -35,8 +38,11 @@ function App() {
           element={
             <div className="flex w-full md:flex-row flex-col">
               <SideNav />
-              <div className="flex w-full justify-between h-screen md:flex-row flex-col border">
-                <div className="flex-grow p-4">{element}</div>
+              <div className="flex w-full justify-between md:flex-row flex-col border  p-4">
+                <div className="flex-grow ">
+                  <Header />
+                  {element}
+                </div>
                 <div className="grid grid-cols-1 md:w-80 w-full gap-3 ">
                   <Weather />
                   <Calender />
