@@ -2,8 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-body{
-  font-family: 'Poppins', sans-serif;
+body {
+  font-family: "Poppins", sans-serif;
 }
 
 @layer base {
@@ -69,7 +69,6 @@ body{
   }
   body {
     @apply bg-background text-foreground;
-
   }
 }
 
@@ -77,36 +76,34 @@ body{
   @apply text-center;
 }
 
-
-
-
 /* Calendar.css */
-
-
 
 /* Calendar.css */
 
 .custom-calendar {
-  /* Define CSS variables for react-day-picker */
-  --rdp-accent-color: #007bff; /* Example accent color */
   --rdp-accent-background-color: #e0f0ff;
-  --rdp-font-family: 'Poppins, sans-serif';
-  --rdp-day-font: 'Poppins, sans-serif';
-
+  --rdp-font-family: "Arial, sans-serif";
+  --rdp-day-font: "Arial, sans-serif";
+  --rdp-day-height: 40px;
+  --rdp-day-width: 40px;
   --rdp-chevron-disabled-opacity: 0.5;
   --rdp-day_button-border-radius: 4px;
-  --rdp-day_button-border: 1px solid #ddd;
-
-  --rdp-selected-border: 2px solid #007bff;
+  --rdp-day_button-height: 40px;
+  --rdp-day_button-width: 40px;
   --rdp-selected-font: bold;
-  --rdp-disabled-opacity: ;
-  --rdp-outside-opacity: 0.8;
-  --rdp-today-color: blue;
-
+  --rdp-disabled-opacity: 0.3;
+  --rdp-outside-opacity: 0.5;
+  --rdp-selected-border:none;
+  --rdp-weekday-font: "Arial, sans-serif";
+  --rdp-dropdown-gap: 8px;
+  --rdp-month_caption-font: "Arial, sans-serif";
   --rdp-months-gap: 16px;
   --rdp-nav_button-disabled-opacity: 0.5;
+  --rdp-nav_button-height: 30px;
+  --rdp-nav_button-width: 30px;
+  --rdp-nav-height: 50px;
   --rdp-range_middle-background-color: #cce5ff;
-  --rdp-range_middle-font: 'Arial, sans-serif';
+  --rdp-range_middle-font: "Arial, sans-serif";
   --rdp-range_middle-foreground-color: #007bff;
   --rdp-range_start-color: #007bff;
   --rdp-range_start-background: #e0f0ff;
@@ -116,25 +113,29 @@ body{
   --rdp-range_end-date-background-color: #cce5ff;
   --rdp-week_number-border-radius: 4px;
   --rdp-week_number-border: 1px solid #ddd;
-  --rdp-week_number-font: 'Arial, sans-serif';
+  --rdp-week_number-font: "Arial, sans-serif";
   --rdp-week_number-height: 40px;
   --rdp-week_number-width: 40px;
-  --rdp-weekday-font: 'Arial, sans-serif';
+  --rdp-weekday-font: "Arial, sans-serif";
   --rdp-weekday-opacity: 1;
   --rdp-weekday-padding: 8px;
   --rdp-weekday-text-align: center;
 }
 
-
 .custom-calendar .rdp-day:nth-child(7) {
   color: red;
 }
 
+.custom-calendar .rdp-today {
+  background-color: blue;
+  border-radius: 100%;
+  color: white;
+}
 
-/* Optional: Additional responsiveness for DayPicker elements */
-.custom-calendar .rdp {
-  width: 100%;
-  height: 100%;
+.custom-calendar .rdp-selected {
+  background-color: rgb(55, 55, 250);
+  border-radius: 100%;
+  color: white;
 }
 
 .custom-calendar .rdp-months {
@@ -147,27 +148,30 @@ body{
 }
 
 /* Responsive day sizes */
-@media (max-width: 640px) { /* Small screens */
+@media (max-width: 640px) {
+  /* Small screens */
   .custom-calendar {
     --rdp-day-height: 30px;
-    --rdp-day-width: 55px;
+    --rdp-day-width: 30px;
     --rdp-weekday-padding: 4px;
-    --rdp-month_caption-font: 'Arial, sans-serif';
-    --rdp-weekday-font: 'Arial, sans-serif';
+    --rdp-month_caption-font: "Arial, sans-serif";
+    --rdp-weekday-font: "Arial, sans-serif";
   }
 }
 
-@media (min-width: 641px) and (max-width: 1024px) { /* Medium screens */
+@media (min-width: 641px) and (max-width: 1024px) {
+  /* Medium screens */
   .custom-calendar {
-    --rdp-day-height: 100px;
-    --rdp-day-width: 35px;
+    --rdp-day-height: 30px;
+    --rdp-day-width: 45px;
     --rdp-weekday-padding: 6px;
   }
 }
 
-@media (min-width: 1025px) { /* Large screens */
+@media (min-width: 1025px) {
+  /* Large screens */
   .custom-calendar {
-    --rdp-day-height: 40px;
+    --rdp-day-height: 45px;
     --rdp-day-width: 40px;
     --rdp-weekday-padding: 8px;
   }

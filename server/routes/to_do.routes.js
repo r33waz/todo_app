@@ -18,12 +18,12 @@ router.post("/createTodo",
   // authenticate, 
   CreateTodo);
 router.delete("/deleteTodo", DeleteTodo);
-router.get("/all_todo", GetAllTodo);
+router.get("/all_todo/:id", GetAllTodo);
 router.patch("/update-todo/:id", UpdateTodo);
 router.get("/todos/search", FilterTodo);
 router.get("/completed-todo", CompletedTask);
 router.get("/important-todo",ImportantTask)
 router.get("/today-todo",GetTodayTodo)
-router.get("/upcomming-task",UpComingTask)
+router.get("/upcomming-task/:id",UpComingTask)
 
 export default router;

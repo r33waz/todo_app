@@ -31,7 +31,6 @@ const TodoSchema = new mongoose.Schema({
   },
   time: {
     type: String,
-    required: true,
     default: function () {
       return new Date().toLocaleTimeString([], {
         hour: "2-digit",

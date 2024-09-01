@@ -2,7 +2,7 @@ import ToDo from "../model/todo.model.js";
 
 export const CreateTodo = async (req, res) => {
   try {
-    const { userId, title, description, date } = req.body;
+    const { userId, title, description, date,time } = req.body;
     if (!userId) {
       return res.status(400).json({
         success: false,
@@ -29,6 +29,7 @@ export const CreateTodo = async (req, res) => {
       title,
       description,
       date,
+      time
     });
 
     await newTodo.save();
@@ -73,10 +74,11 @@ export const DeleteTodo = async (req, res) => {
 //get all todo according to the user
 export const GetAllTodo = async (req, res) => {
   try {
-    const { userId, title, date } = req.body;
+    const{id} = req.params
+    const {  title, date } = req.body;
 
     // Build the query object based on the provided filters
-    let query = { userId };
+    let query = { userId:id };
 
     if (title) {
       query.title = { $regex: title, $options: "i" }; // Case-insensitive title search
@@ -91,7 +93,7 @@ export const GetAllTodo = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      todo,
+      data:todo,
     });
   } catch (error) {
     console.error(error);
@@ -178,9 +180,10 @@ export const FilterTodo = async (req, res) => {
 
 export const CompletedTask = async (req, res) => {
   try {
-    const { title, date, userId } = req.body;
+    const {id}= req.params
+    const { title, date } = req.body;
     let query = {
-      userId: userId,
+      userId: id,
       completed: true,
     };
 
@@ -276,14 +279,14 @@ export const GetTodayTodo = async (req, res) => {
 
 export const UpComingTask = async (req, res) => {
   try {
-    const { userId } = req.body;
+    const { id } = req.params;
     const today = new Date();
     const tomorrow = new Date(today);
     tomorrow.setDate(tomorrow.getDate() + 1);
     tomorrow.setUTCHours(0, 0, 0, 0);
 
     const query = {
-      userId,
+      userId:id,
       date: { $gte: tomorrow },
     };
 
