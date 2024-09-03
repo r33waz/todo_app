@@ -2,7 +2,8 @@ import ToDo from "../model/todo.model.js";
 
 export const CreateTodo = async (req, res) => {
   try {
-    const { userId, title, description, date,time } = req.body;
+    const { userId, title, description, date, time } = req.body;
+
     if (!userId) {
       return res.status(400).json({
         success: false,
@@ -24,12 +25,13 @@ export const CreateTodo = async (req, res) => {
       });
     }
 
+    // Only include date and time if they are provided
     const newTodo = new ToDo({
       userId,
       title,
       description,
-      date,
-      time
+      date: date || undefined,
+      time: time || undefined,
     });
 
     await newTodo.save();
@@ -49,7 +51,7 @@ export const CreateTodo = async (req, res) => {
 
 export const DeleteTodo = async (req, res) => {
   try {
-    const { id } = req.body;
+    const { id } = req.params;
     const existingTodo = await ToDo.findById({ _id: id });
     if (!existingTodo) {
       return res.status(400).json({
@@ -74,11 +76,11 @@ export const DeleteTodo = async (req, res) => {
 //get all todo according to the user
 export const GetAllTodo = async (req, res) => {
   try {
-    const{id} = req.params
-    const {  title, date } = req.body;
+    const { id } = req.params;
+    const { title, date } = req.body;
 
     // Build the query object based on the provided filters
-    let query = { userId:id };
+    let query = { userId: id };
 
     if (title) {
       query.title = { $regex: title, $options: "i" }; // Case-insensitive title search
@@ -93,7 +95,7 @@ export const GetAllTodo = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      data:todo,
+      data: todo,
     });
   } catch (error) {
     console.error(error);
@@ -147,7 +149,8 @@ export const UpdateTodo = async (req, res) => {
 export const FilterTodo = async (req, res) => {
   try {
     // Extract query parameters from the request
-    const { userId, status, date, completed, important } = req.query;
+    const { userId, title, date, completed, important } = req.query;
+    console.log(userId, title, date, completed, important);
 
     // Ensure the userId is provided
     if (!userId) {
@@ -155,24 +158,27 @@ export const FilterTodo = async (req, res) => {
     }
 
     let query = { userId };
-    if (status) {
-      query.status = status;
-    }
 
     if (date) {
       query.date = new Date(date);
     }
 
-    if (completed !== undefined) {
+    if (completed) {
       query.completed = completed === "true";
     }
 
     if (important) {
       query.important = important === "true";
     }
-    const todos = await ToDo.find(query);
 
-    res.json(todos);
+    if (title) {
+      query.title = { $regex: title, $options: "i" };
+    }
+    const todos = await ToDo.find(query);
+    res.status(200).json({
+      success: true,
+      data: todos,
+    });
   } catch (err) {
     res.status(500).json({ message: "Error retrieving todos" });
   }
@@ -180,10 +186,20 @@ export const FilterTodo = async (req, res) => {
 
 export const CompletedTask = async (req, res) => {
   try {
-    const {id}= req.params
-    const { title, date } = req.body;
+    const { userId, title, date, important } = req.query;
+    console.log(userId, title, date, important);
+
+    // Ensure the userId is valid before proceeding
+    if (!userId) {
+      return res.status(400).json({
+        success: false,
+        message: "User ID is required",
+      });
+    }
+
+    // Build the query
     let query = {
-      userId: id,
+      userId,
       completed: true,
     };
 
@@ -194,18 +210,23 @@ export const CompletedTask = async (req, res) => {
     if (date) {
       const exactDate = new Date(date);
       exactDate.setUTCHours(0, 0, 0, 0);
-
       query.date = exactDate;
     }
 
+    if (important) {
+      query.important = important === "true";
+    }
+
+    // Execute the query
     const todo = await ToDo.find(query);
 
+    // Send response
     res.status(200).json({
       success: true,
-      todo,
+      data: todo,
     });
   } catch (error) {
-    console.error(error);
+    console.error("Error in CompletedTask:", error);
     res.status(500).json({
       success: false,
       message: "Internal Server Error",
@@ -216,10 +237,13 @@ export const CompletedTask = async (req, res) => {
 //important task
 export const ImportantTask = async (req, res) => {
   try {
-    const { title, date, userId } = req.body;
+    const { postId } = req.body;
+    const { title, date, userId, completed } = req.query;
+
+    // Define the query for finding todos
     let query = {
       userId: userId,
-      important: true,
+      $or: [{ important: true }],
     };
 
     if (title) {
@@ -229,15 +253,42 @@ export const ImportantTask = async (req, res) => {
     if (date) {
       const exactDate = new Date(date);
       exactDate.setUTCHours(0, 0, 0, 0);
-
       query.date = exactDate;
     }
 
-    const todo = await ToDo.find(query);
+    if (completed) {
+      query.completed = completed === "true";
+    }
+
+    // If postId is provided, toggle the important status of the task
+    if (postId) {
+      const updatedTodo = await ToDo.findById(postId);
+
+      if (updatedTodo) {
+        // Toggle the "important" status
+        updatedTodo.important = !updatedTodo.important;
+        await updatedTodo.save(); // Save the updated document
+
+        // Send response
+        return res.status(200).json({
+          success: true,
+          message: "Important task updated successfully",
+          updatedTodo,
+        });
+      } else {
+        return res.status(404).json({
+          success: false,
+          message: "Task not found",
+        });
+      }
+    }
+
+    // If postId is not provided, return the filtered list of tasks
+    const todos = await ToDo.find(query);
 
     res.status(200).json({
       success: true,
-      todo,
+      data:todos,
     });
   } catch (error) {
     console.error(error);
@@ -247,6 +298,7 @@ export const ImportantTask = async (req, res) => {
     });
   }
 };
+
 
 //todays todo
 export const GetTodayTodo = async (req, res) => {
@@ -286,7 +338,7 @@ export const UpComingTask = async (req, res) => {
     tomorrow.setUTCHours(0, 0, 0, 0);
 
     const query = {
-      userId:id,
+      userId: id,
       date: { $gte: tomorrow },
     };
 

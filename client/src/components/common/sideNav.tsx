@@ -102,7 +102,6 @@ function SideNav() {
     },
   ];
   return (
-      <div className=" md:w-fit w-full  ">
         <Sidebar>
           <SidebarBody>
             {Links.map((link, index) => (
@@ -110,7 +109,6 @@ function SideNav() {
             ))}
           </SidebarBody>
         </Sidebar>
-      </div>
   );
 }
 

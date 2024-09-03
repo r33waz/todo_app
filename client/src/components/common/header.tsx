@@ -25,8 +25,6 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { CreateTodoInterface } from "../../interface/todoInterface";
 import { CreateTodo, GetAllTodo } from "../../rtk/todoThunk/toodoThunk";
-// Import your todo creation logic, e.g., an API function or a Redux action
-// import { createTodo } from "../../api/todo";
 
 function Header() {
   const navigate = useNavigate();
@@ -55,19 +53,31 @@ function Header() {
   } = useForm<CreateTodoInterface>();
 
   const convertTimeTo12HourFormat = (time) => {
-    let [hour, minute] = time.split(":");
-    hour = parseInt(hour, 10);
+    if (!time) return ""; // Handle undefined or empty time
+
+    const [hourStr, minute] = time.split(":");
+    if (!hourStr || minute === undefined) return "12:00 AM"; // Default fallback
+
+    const hour = parseInt(hourStr, 10);
+    const min = parseInt(minute, 10);
+
+    if (isNaN(hour) || isNaN(min)) return "12:00 AM"; // Handle non-numeric values
+
     const period = hour >= 12 ? "PM" : "AM";
-    hour = hour % 12 || 12; // Convert '00' to '12' for midnight
-    return `${("0" + hour).slice(-2)}:${minute} ${period}`;
+    const adjustedHour = hour % 12 || 12; // Convert '00' to '12' for midnight
+
+    // Ensure minute is two digits
+    const formattedMinute = minute.length === 1 ? `0${minute}` : minute;
+
+    return `${adjustedHour}:${formattedMinute} ${period}`;
   };
 
   const OnSubmit = async (data: CreateTodoInterface) => {
     try {
       if (user?._id) {
-        // Convert time to 12-hour format
+        console.log("Raw Time:", data.time); // Debugging
         const formattedTime = convertTimeTo12HourFormat(data.time);
-        console.log("Formatted Time:", formattedTime);
+        console.log("Formatted Time:", formattedTime); // Debugging
 
         await dispatch(
           CreateTodo({
@@ -77,7 +87,12 @@ function Header() {
         );
         reset(); // Reset form fields
         setIsDialogOpen(false); // Close the dialog
-        dispatch(GetAllTodo({ userId: user?._id }));
+        dispatch(
+          GetAllTodo({
+            userId: user?._id,
+            data: {},
+          })
+        );
       } else {
         console.error("User ID is undefined");
         // Optionally, show an error toast
@@ -119,10 +134,10 @@ function Header() {
                     className="p-2 rounded-lg border w-full text-xs"
                     type="text"
                     placeholder="Title*"
-                    {...register("title", { required: true })}
+                    {...register("title", { required: "Title is required" })}
                   />
                   <small className="text-red-500">
-                    {errors.title && "Title is required"}
+                    {errors.title && errors.title.message}
                   </small>
                 </div>
                 <div className="flex flex-col gap-1">
@@ -131,24 +146,30 @@ function Header() {
                     className="p-2 rounded-lg border w-full text-xs"
                     type="text"
                     placeholder="Description*"
-                    {...register("description", { required: true })}
+                    {...register("description", {
+                      required: "Description is required",
+                    })}
                   />
                   <small className="text-red-500">
-                    {errors.description && "Description is required"}
+                    {errors.description && errors.description.message}
                   </small>
                 </div>
-                <input
-                  id="date"
-                  className="p-2 rounded-lg border w-full text-xs"
-                  type="date"
-                  {...register("date")}
-                />
-                <input
-                  id="time"
-                  className="p-2 rounded-lg border w-full text-xs"
-                  type="time"
-                  {...register("time")}
-                />
+                <div className="flex flex-col gap-1">
+                  <input
+                    id="date"
+                    className="p-2 rounded-lg border w-full text-xs"
+                    type="date"
+                    {...register("date")}
+                  />
+                </div>
+                <div className="flex flex-col gap-1">
+                  <input
+                    id="time"
+                    className="p-2 rounded-lg border w-full text-xs"
+                    type="time"
+                    {...register("time")}
+                  />
+                </div>
               </div>
               <DialogFooter className="mt-2">
                 <DialogClose asChild>

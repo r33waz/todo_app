@@ -14,11 +14,6 @@ const TodoSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  status: {
-    type: String,
-    required: true,
-    default: "Pending",
-  },
   date: {
     type: Date,
     default: () => {
