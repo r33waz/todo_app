@@ -43,6 +43,10 @@ const TodoSchema = new mongoose.Schema({
     required: true,
     default: false,
   },
+  upcomming: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const ToDo = mongoose.model("ToDo", TodoSchema);

@@ -25,12 +25,12 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { CreateTodoInterface } from "../../interface/todoInterface";
 import { CreateTodo, GetAllTodo } from "../../rtk/todoThunk/toodoThunk";
+import {TimeConverter} from "../../hooks/timeConverter";
 
 function Header() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.auth);
-  const { loading } = useAppSelector((state) => state.todo);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const handleLogOut = () => {
@@ -52,31 +52,11 @@ function Header() {
     reset,
   } = useForm<CreateTodoInterface>();
 
-  const convertTimeTo12HourFormat = (time) => {
-    if (!time) return ""; // Handle undefined or empty time
-
-    const [hourStr, minute] = time.split(":");
-    if (!hourStr || minute === undefined) return "12:00 AM"; // Default fallback
-
-    const hour = parseInt(hourStr, 10);
-    const min = parseInt(minute, 10);
-
-    if (isNaN(hour) || isNaN(min)) return "12:00 AM"; // Handle non-numeric values
-
-    const period = hour >= 12 ? "PM" : "AM";
-    const adjustedHour = hour % 12 || 12; // Convert '00' to '12' for midnight
-
-    // Ensure minute is two digits
-    const formattedMinute = minute.length === 1 ? `0${minute}` : minute;
-
-    return `${adjustedHour}:${formattedMinute} ${period}`;
-  };
-
   const OnSubmit = async (data: CreateTodoInterface) => {
     try {
       if (user?._id) {
         console.log("Raw Time:", data.time); // Debugging
-        const formattedTime = convertTimeTo12HourFormat(data.time);
+        const formattedTime = TimeConverter(data.time ?? "");
         console.log("Formatted Time:", formattedTime); // Debugging
 
         await dispatch(
@@ -169,6 +149,19 @@ function Header() {
                     type="time"
                     {...register("time")}
                   />
+                </div>
+                {/* dropdown to select the important of not */}
+                <div className="flex flex-col gap-1">
+                  <select
+                    id="important"
+                    className="p-2 rounded-lg border w-full text-xs"
+                    {...register("important")}
+                    defaultValue="false"
+                  >
+                    <option value="">Select an option</option>
+                    <option value="false">Not Important</option>
+                    <option value="true">Important</option>
+                  </select>
                 </div>
               </div>
               <DialogFooter className="mt-2">

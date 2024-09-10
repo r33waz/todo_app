@@ -4,9 +4,12 @@ import {
   CreateTodoInterface,
   FilterTodoInterface,
   ImportantTaskInterface,
+  UmcomminginfoInterface,
+  UpdateTodoInterface,
 } from "../../interface/todoInterface";
 import { main_url } from "../../service";
-import { SuccessToast } from "../../components/common/toast";
+import { ErrorToast, SuccessToast } from "../../components/common/toast";
+import { UpdateData } from "../../interface/authInterface";
 
 export const CreateTodo = createAsyncThunk(
   "create-todo",
@@ -18,6 +21,7 @@ export const CreateTodo = createAsyncThunk(
         userId,
       });
       console.log(resp.data.data);
+      SuccessToast({ message: resp.data?.message });
       return resp.data.data;
     } catch (error) {
       console.log(error);
@@ -44,6 +48,7 @@ export const GetAllTodo = createAsyncThunk(
       return resp.data.data;
     } catch (error) {
       console.log(error);
+      ErrorToast({ message: error.response.data.message });
       return rejectWithValue(error);
     }
   }
@@ -96,6 +101,19 @@ export const ImportantTodo = createAsyncThunk(
     }
   }
 );
+//togle important task
+export const TogleImportant = createAsyncThunk(
+  "togle/important",
+  async ({ id }: { id: string }, { rejectWithValue }) => {
+    try {
+      const resp = await main_url.patch(`/toggle-todo/${id}`);
+      SuccessToast({ message: resp?.data?.message });
+      return resp.data.data;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
 
 // delete todo
 export const DeleteTodo = createAsyncThunk(
@@ -104,6 +122,76 @@ export const DeleteTodo = createAsyncThunk(
     try {
       const resp = await main_url.delete(`/deleteTodo/${id}`);
       SuccessToast({ message: resp.data?.message });
+      return resp.data.data;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
+// upcomming task
+
+export const UpcommingTodo = createAsyncThunk(
+  "upcomming-todo",
+  async (
+    { id, data }: { id: string; data: UmcomminginfoInterface },
+    { rejectWithValue }
+  ) => {
+    try {
+      const resp = await main_url.get(
+        `/upcomming-task/search?userId=${id}&title=${
+          data?.title ? data?.title : ""
+        }&important=${data?.important ? data?.important : ""}&date=${
+          data?.date ? data?.date : ""
+        }`
+      );
+      console.log("first", resp.data.data);
+      return resp.data.data;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+// todays task
+
+export const TodaysTodo = createAsyncThunk(
+  "todays-todo",
+  async (
+    {
+      id,
+      data,
+    }: {
+      id: string;
+      data: {
+        title: string;
+      };
+    },
+    { rejectWithValue }
+  ) => {
+    try {
+      const resp = await main_url.get(
+        `/today-todo/search?userId=${id}&title=${
+          data?.title ? data?.title : ""
+        }`
+      );
+      console.log("first", resp.data.data);
+      return resp.data.data;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+//update the task
+
+export const UpdateTodo = createAsyncThunk(
+  "update-todo",
+  async (
+    { id, data }: { id: string; data: UpdateTodoInterface },
+    { rejectWithValue }
+  ) => {
+    try {
+      const resp = await main_url.patch(`/update-todo/${id}`, data);
+      SuccessToast({ message: resp?.data?.message });
       return resp.data.data;
     } catch (error) {
       return rejectWithValue(error);

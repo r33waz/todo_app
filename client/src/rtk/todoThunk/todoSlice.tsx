@@ -5,6 +5,9 @@ import {
   DeleteTodo,
   GetAllTodo,
   ImportantTodo,
+  TodaysTodo,
+  TogleImportant,
+  UpcommingTodo,
 } from "./toodoThunk";
 import { TodoInterface } from "../../interface/todoInterface";
 
@@ -19,6 +22,16 @@ const initialState: TodoInterface = {
   },
   //important task
   important: {
+    list: [],
+  },
+
+  //upcomming task
+  upcomming: {
+    list: [],
+  },
+
+  //todays task
+  todays: {
     list: [],
   },
 };
@@ -90,6 +103,45 @@ const todoSlice = createSlice({
     builder.addCase(ImportantTodo.rejected, (state) => {
       state.loading = false;
       state.error = true;
+    });
+    //toggle important
+    builder.addCase(TogleImportant.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(TogleImportant.fulfilled, (state) => {
+      state.loading = false;
+      state.error = false;
+    });
+    builder.addCase(TogleImportant.rejected, (state) => {
+      state.loading = false;
+      state.error = true;
+    });
+    builder.addCase(UpcommingTodo.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(UpcommingTodo.fulfilled, (state, { payload }) => {
+      state.loading = false;
+      state.upcomming.list = payload;
+      state.error = false;
+    });
+    builder.addCase(UpcommingTodo.rejected, (state) => {
+      state.loading = false;
+      state.error = true;
+    });
+
+    builder.addCase(TodaysTodo.rejected, (state) => {
+      state.loading = false;
+      state.error = true;
+    });
+
+    builder.addCase(TodaysTodo.fulfilled, (state, { payload }) => {
+      state.loading = false;
+      state.todays.list = payload;
+      state.error = false;
+    });
+
+    builder.addCase(TodaysTodo.pending, (state) => {
+      state.loading = true;
     });
   },
 });

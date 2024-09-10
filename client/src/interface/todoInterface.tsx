@@ -3,6 +3,8 @@ export interface CreateTodoInterface {
   description: string;
   date?: string;
   time?: string;
+  important: boolean;
+  upcomming: boolean;
 }
 
 export interface TodoInterface {
@@ -18,6 +20,16 @@ export interface TodoInterface {
   important: {
     list: Todoinfo[];
   };
+
+  //upcomming task
+  upcomming: {
+    list: Todoinfo[];
+  };
+
+  //today task
+  todays: {
+    list: Todoinfo[];
+  };
 }
 
 export interface Todoinfo {
@@ -29,6 +41,7 @@ export interface Todoinfo {
   userId: string;
   important: boolean;
   completed: boolean;
+  upcomming: boolean;
 }
 
 export interface UpdateTodoInterface {
@@ -36,16 +49,16 @@ export interface UpdateTodoInterface {
   description: string;
   date?: string;
   time?: string;
-  _id: string;
+  completed: boolean;
 }
 
 //filter todo
 
 export interface FilterTodoInterface {
   title?: string;
-  important: boolean;
-  completed: boolean;
-  date: string;
+  important?: boolean;
+  completed?: boolean;
+  date?: string;
 }
 
 //colpleted task interface
@@ -58,5 +71,11 @@ export interface CompletedTaskInterface {
 export interface ImportantTaskInterface {
   title?: string;
   date: string;
-  completed: boolean
+  completed: boolean;
+}
+
+export interface UmcomminginfoInterface {
+  title: string;
+  date: string;
+  important: boolean;
 }

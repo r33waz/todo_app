@@ -2,7 +2,7 @@ import ToDo from "../model/todo.model.js";
 
 export const CreateTodo = async (req, res) => {
   try {
-    const { userId, title, description, date, time } = req.body;
+    const { userId, title, description, date, time, important } = req.body;
 
     if (!userId) {
       return res.status(400).json({
@@ -25,13 +25,22 @@ export const CreateTodo = async (req, res) => {
       });
     }
 
-    // Only include date and time if they are provided
+    // Get today's date (with time reset to midnight)
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Set the time to 00:00:00 for accurate comparison
+
+    // Set 'upcoming' to true if the provided 'date' is greater than today's date, otherwise false
+    const upcoming = date && new Date(date) > today ? true : false;
+
+    // Create new todo, including the 'upcoming' field
     const newTodo = new ToDo({
       userId,
       title,
       description,
       date: date || undefined,
       time: time || undefined,
+      important,
+      upcoming, // true if the date is in the future, otherwise false
     });
 
     await newTodo.save();
@@ -112,26 +121,51 @@ export const GetAllTodo = async (req, res) => {
 export const UpdateTodo = async (req, res) => {
   try {
     const { id } = req.params;
-    const { title, description, status, completed, important } = req.body;
-    const updateData = await ToDo.findByIdAndUpdate(
-      { _id: id },
-      {
-        title,
-        description,
-        status,
-        completed,
-        important,
-      },
-      {
-        new: true,
-      }
-    );
-    if (!updateData) {
-      return res.status(400).json({
+    const { title, description, completed, date, time } = req.body;
+
+    // Find the existing task in the database
+    const existingTodo = await ToDo.findById(id);
+
+    if (!existingTodo) {
+      return res.status(404).json({
         success: false,
         message: "Todo not found",
       });
     }
+
+    // Get the date of the existing task
+    const taskDate = new Date(existingTodo.date); // Date from the existing task
+    taskDate.setHours(0, 0, 0, 0); // Normalize time to midnight
+
+    const inputDate = new Date(date);
+    inputDate.setHours(0, 0, 0, 0);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    // Define fields to be updated
+    const updateFields = {
+      title,
+      description,
+      completed,
+      date,
+      time,
+    };
+
+    if (inputDate.getTime() > today.getTime()) {
+      updateFields.upcomming = true; // Future task
+    } else if (inputDate.getTime() === today.getTime()) {
+      updateFields.upcomming = false; // Pending task 
+    } else {
+      updateFields.upcomming = false; // Past task 
+    }
+    // Update the task in the database with the new fields
+    const updatedTodo = await ToDo.findByIdAndUpdate(
+      { _id: id },
+      updateFields,
+      {
+        new: true, // Return the updated document
+      }
+    );
 
     res.status(200).json({
       success: true,
@@ -146,6 +180,30 @@ export const UpdateTodo = async (req, res) => {
   }
 };
 
+//find single todo
+export const FindSingleTodo = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const todo = await ToDo.findById({ _id: id });
+    if (!todo) {
+      return res.status(400).json({
+        success: false,
+        message: "Todo not found",
+      });
+    }
+    res.status(200).json({
+      success: true,
+      data: todo,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
+};
+//filter todo
 export const FilterTodo = async (req, res) => {
   try {
     // Extract query parameters from the request
@@ -237,7 +295,6 @@ export const CompletedTask = async (req, res) => {
 //important task
 export const ImportantTask = async (req, res) => {
   try {
-    const { postId } = req.body;
     const { title, date, userId, completed } = req.query;
 
     // Define the query for finding todos
@@ -260,35 +317,12 @@ export const ImportantTask = async (req, res) => {
       query.completed = completed === "true";
     }
 
-    // If postId is provided, toggle the important status of the task
-    if (postId) {
-      const updatedTodo = await ToDo.findById(postId);
-
-      if (updatedTodo) {
-        // Toggle the "important" status
-        updatedTodo.important = !updatedTodo.important;
-        await updatedTodo.save(); // Save the updated document
-
-        // Send response
-        return res.status(200).json({
-          success: true,
-          message: "Important task updated successfully",
-          updatedTodo,
-        });
-      } else {
-        return res.status(404).json({
-          success: false,
-          message: "Task not found",
-        });
-      }
-    }
-
     // If postId is not provided, return the filtered list of tasks
     const todos = await ToDo.find(query);
 
     res.status(200).json({
       success: true,
-      data:todos,
+      data: todos,
     });
   } catch (error) {
     console.error(error);
@@ -299,11 +333,10 @@ export const ImportantTask = async (req, res) => {
   }
 };
 
-
 //todays todo
 export const GetTodayTodo = async (req, res) => {
   try {
-    const { userId } = req.body;
+    const { title, userId } = req.query;
 
     const today = new Date();
     today.setUTCHours(0, 0, 0, 0);
@@ -311,6 +344,10 @@ export const GetTodayTodo = async (req, res) => {
       userId,
       date: { $gte: today },
     };
+
+    if (title) {
+      query.title = { $regex: title, $options: "i" };
+    }
 
     const todo = await ToDo.find(query);
 
@@ -331,24 +368,74 @@ export const GetTodayTodo = async (req, res) => {
 
 export const UpComingTask = async (req, res) => {
   try {
-    const { id } = req.params;
-    const today = new Date();
-    const tomorrow = new Date(today);
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    tomorrow.setUTCHours(0, 0, 0, 0);
-
-    const query = {
-      userId: id,
-      date: { $gte: tomorrow },
+    const { title, date, userId, important } = req.query;
+    let query = {
+      userId,
+      $or: [{ upcomming: true }],
     };
+
+    if (title) {
+      query.title = { $regex: title, $options: "i" };
+    }
+
+    if (date) {
+      query.date = date;
+    }
+
+    if (important) {
+      query.important = important === "true";
+    }
 
     const todo = await ToDo.find(query);
     return res.status(200).json({
       success: true,
-      todo,
+      data: todo,
     });
   } catch (error) {
     console.log(error);
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
+};
+
+export const toggleImportantTask = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!id) {
+      return res.status(400).json({
+        success: false,
+        message: "postId is required",
+      });
+    }
+
+    // Find the specific todo by its ID
+    const todo = await ToDo.findById(id);
+
+    if (!todo) {
+      return res.status(404).json({
+        success: false,
+        message: "Task not found",
+      });
+    }
+
+    // Toggle the "important" status
+    todo.important = !todo.important;
+    const updatedTodo = await todo.save(); // Save the updated document
+
+    const message = todo.important
+      ? "Task added to important"
+      : "Task removed from important";
+
+    // Send response
+    res.status(200).json({
+      success: true,
+      message,
+    });
+  } catch (error) {
+    console.error(error);
     res.status(500).json({
       success: false,
       message: "Internal Server Error",
