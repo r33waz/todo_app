@@ -5,7 +5,6 @@ import {
   GetAllTodo,
   TogleImportant,
 } from "../rtk/todoThunk/toodoThunk";
-import { Loading } from "../components/common/loading";
 import {
   Dialog,
   DialogClose,
@@ -18,6 +17,7 @@ import {
 } from "../components/ui/dialog";
 import { Button } from "../components/common/button";
 import EiditTodo from "../components/eiditTodo";
+import { Loading } from "../components/common/loading";
 
 function Home() {
   const dispatch = useAppDispatch();
@@ -33,15 +33,13 @@ function Home() {
   });
 
   useEffect(() => {
-    if (user?._id) {
       dispatch(
         GetAllTodo({
-          userId: user._id,
+          userId: user?._id ?? "",
           data: filters,
         })
       );
-    }
-  }, [dispatch, user, filters]);
+  }, [dispatch]);
 
   const handleFilterChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -89,7 +87,7 @@ function Home() {
   return (
     <div className="md:h-[90vh] overflow-y-scroll custom-scrollbar">
       <div className="pt-5 flex flex-col gap-5 relative">
-        <div className="flex  gap-4 sticky top-0 md:flex-nowrap flex-wrap">
+        <div className="flex  gap-4 sticky top-0 z-50 md:flex-nowrap flex-wrap bg-white">
           <input
             type="text"
             name="title"
@@ -127,11 +125,11 @@ function Home() {
           </select>
         </div>
         <div>
-          {/* {loading ? (
+          {loading ? (
             <div className="flex flex-col min-h-screen items-center justify-center">
               <Loading className="text-btn_bg h-96" width={100} height={100} />
             </div>
-          ) : ( */}
+          ) : (
             <>
               {data?.list?.map((item, idx) => (
                 <div
@@ -159,7 +157,7 @@ function Home() {
                       <p>{item?.description}</p>
                     </div>
                     <div className="flex items-center gap-2 md:flex-row flex-col justify-center">
-                      <EiditTodo task={item} refresh={refreshTodos} />
+                      <EiditTodo task={item} refreshTodos={refreshTodos} />
                       <span
                         className="cursor-pointer"
                         onClick={() => handleToggleImportant(item?._id)}
@@ -273,7 +271,7 @@ function Home() {
                 </div>
               ))}
             </>
-          {/* )} */}
+          )}
         </div>
       </div>
     </div>

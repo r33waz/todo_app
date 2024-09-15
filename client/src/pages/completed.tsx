@@ -3,6 +3,7 @@ import { useAppDispatch, useAppSelector } from "../hooks/hooks";
 import {
   CompletedTodo,
   DeleteTodo,
+  TogleImportant,
 } from "../rtk/todoThunk/toodoThunk";
 import { Loading } from "../components/common/loading";
 import {
@@ -16,6 +17,7 @@ import {
   DialogTrigger,
 } from "../components/ui/dialog";
 import { Button } from "../components/common/button";
+import EiditTodo from "../components/eiditTodo";
 function CompletedTask() {
   const dispatch = useAppDispatch();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -60,13 +62,36 @@ function CompletedTask() {
     }
   };
 
+  const handleToggleImportant = async (id: string) => {
+    await dispatch(TogleImportant({ id }));
+    if (user?._id) {
+      dispatch(
+        CompletedTodo({
+          userId: user._id,
+          data: filters,
+        })
+      );
+    }
+  };
+
+  const refreshTodos = () => {
+    if (user?._id) {
+      dispatch(
+        CompletedTodo({
+          userId: user._id,
+          data: filters,
+        })
+      );
+    }
+  };
+
   return (
     <div className="md:h-[90vh] overflow-y-scroll custom-scrollbar">
-      {loading ? (
+      {/* {loading ? (
         <div className="flex flex-col min-h-screen items-center justify-center">
           <Loading className="text-btn_bg h-96" width={100} height={100} />
         </div>
-      ) : (
+      ) : ( */}
         <div className="pt-5 flex flex-col gap-5 relative">
           <div className="flex  gap-4 sticky top-0 md:flex-nowrap flex-wrap">
             <input
@@ -99,22 +124,25 @@ function CompletedTask() {
             {completed?.list?.map((item, idx) => (
               <div
                 key={idx}
-                className="flex flex-col mt-3 border p-3 rounded-xl hover:shadow-[0px_1px_2px_1px_#00000024] duration-500 hover:scale-100 gap-5"
+                className={`flex flex-col mt-8 border p-3 rounded-xl hover:shadow-[0px_1px_2px_1px_#00000024] duration-500 hover:scale-100 md:gap-5 gap-2 relative bg-white`}
               >
-                <div className="flex items-center w-full justify-between">
-                  <div className="flex flex-col gap-4">
+                <span
+                  className={`md:w-24 rounded-t-lg px-2 py-0.5 text-sm font-light text-white text-center absolute right-2 -top-6  z-10 duration-500 bg-green-500
+                      hover:-top-7`}
+                >
+                  Completed
+                </span>
+                <div className="flex md:items-center w-full justify-between">
+                  <div className="flex flex-col gap">
                     <h1 className="text-xl font-medium">{item?.title}</h1>
                     <p>{item?.description}</p>
                   </div>
                   <div className="flex items-center gap-2 md:flex-row flex-col justify-center">
+                    <EiditTodo task={item} refreshTodos={refreshTodos} />
                     <span
-                      className={`md:w-24 rounded-xl px-2 py-0.5 text-sm font-light text-white text-center ${
-                        item?.completed ? "bg-green-500" : ""
-                      }`}
+                      className="cursor-pointer"
+                      onClick={() => handleToggleImportant(item?._id)}
                     >
-                      {item?.completed ? "Completed" : "Pending"}
-                    </span>
-                    <span className="cursor-pointer">
                       {item?.important ? (
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -186,7 +214,7 @@ function CompletedTask() {
                     </Dialog>
                   </div>
                 </div>
-                <div className="flex gap-4 md:items-center md:flex-row flex-col">
+                <div className="flex gap-4 md:items-center md:justify-normal justify-between w-full">
                   <div className="flex gap-1 items-center">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -222,7 +250,7 @@ function CompletedTask() {
             ))}
           </div>
         </div>
-      )}
+      {/* )} */}
     </div>
   );
 }
