@@ -111,12 +111,11 @@ export const userLogin = async (req, res) => {
 
     const token = jwt.sign(
       {
-        email: existtingUser.email,
         id: existtingUser._id,
       },
       process.env.JWT_TOKEN,
       {
-        expiresIn: "5d",
+        expiresIn: '30s'
       }
     );
 

@@ -8,12 +8,13 @@ const initialState: UserData = {
   isError: false,
   isSuccess: false,
   message: "",
-  //single user
+  // single user
   singleUserLoading: false,
   singleUserError: false,
   updateLoading: false,
   updateError: false,
   updateSuccess: false,
+  sessionExpired: false,
 };
 
 const authSlice = createSlice({
@@ -23,29 +24,37 @@ const authSlice = createSlice({
     logout: (state) => {
       state.isSuccess = false;
       state.user = null;
+      state.sessionExpired = false;
       localStorage.removeItem("token");
     },
+    setSessionExpired: (state, action: PayloadAction<boolean>) => {
+      state.sessionExpired = action.payload;
+      state.isSuccess = false;
+      state.user = null;
+      localStorage.removeItem("token");
+      state.isLoading = false;
+    },
   },
-  extraReducers(builder) {
+  extraReducers: (builder) => {
     builder.addCase(LoginThunk.pending, (state) => {
       state.isLoading = true;
       state.isSuccess = false;
+      state.sessionExpired = false;
     });
 
-    builder.addCase(
-      LoginThunk.fulfilled,
-      (state, { payload }: PayloadAction<UserInfo>) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.user = payload;
-        localStorage.setItem("token", payload.token);
-      }
-    );
+    builder.addCase(LoginThunk.fulfilled, (state, { payload }: PayloadAction<UserInfo>) => {
+      state.isLoading = false;
+      state.isSuccess = true;
+      state.user = payload;
+      localStorage.setItem("token", payload.token);
+      state.sessionExpired = false;
+    });
 
     builder.addCase(LoginThunk.rejected, (state) => {
       state.isLoading = false;
       state.isError = true;
       state.isSuccess = false;
+      state.user = null;
     });
 
     builder.addCase(RegisterThunk.pending, (state) => {
@@ -63,7 +72,6 @@ const authSlice = createSlice({
       state.isError = true;
       state.isSuccess = false;
     });
-    //single user data
 
     builder.addCase(SingleUser.pending, (state) => {
       state.singleUserLoading = true;
@@ -79,6 +87,7 @@ const authSlice = createSlice({
       state.singleUserLoading = false;
       state.singleUserError = true;
     });
+
     builder.addCase(UpdateUser.pending, (state) => {
       state.updateLoading = true;
     });
@@ -94,5 +103,6 @@ const authSlice = createSlice({
     });
   },
 });
-export const { logout } = authSlice.actions;
+
+export const { logout, setSessionExpired } = authSlice.actions;
 export default authSlice.reducer;

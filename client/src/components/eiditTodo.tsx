@@ -8,14 +8,14 @@ import {
   DialogTrigger,
 } from "./ui/dialog";
 import { Button } from "./common/button";
-import { TimeConverter, TimeConverter12to24, TimeConverter24to12 } from "../hooks/timeConverter";
+import { TimeConverter, TimeConverter24to12 } from "../hooks/timeConverter";
 import { useAppDispatch } from "../hooks/hooks";
 import { UpdateTodo } from "../rtk/todoThunk/toodoThunk";
 import { useEffect } from "react";
 
 function EditTodo({
   task,
-  refresh,
+  refreshTodos,
 }: {
   task: {
     _id: string;
@@ -26,13 +26,13 @@ function EditTodo({
     date: string;
     time: string;
   };
-  refresh: () => void;
+  refreshTodos: () => void;
 }) {
   const dispatch = useAppDispatch();
   const { _id } = task;
 
-  const formattedDate = task.date.split("T")[0]; 
-  const formattedTime = TimeConverter(task.time); 
+  const formattedDate = task.date.split("T")[0];
+  const formattedTime = TimeConverter(task.time);
 
   const { register, handleSubmit, setValue, watch, getValues } = useForm({
     defaultValues: {
@@ -63,7 +63,7 @@ function EditTodo({
       time: formattedTime,
     };
     await dispatch(UpdateTodo({ id: _id, data: newTask }));
-    refresh();
+    refreshTodos();
   };
 
   const toggleCompletion = async () => {
@@ -76,7 +76,7 @@ function EditTodo({
         data: { title, description, date, completed: updatedCompleted },
       })
     );
-    refresh();
+    refreshTodos();
   };
 
   return (
@@ -111,6 +111,7 @@ function EditTodo({
               <DialogTitle className="text-xl font-semibold">
                 Edit Todo
               </DialogTitle>
+              <DialogDescription></DialogDescription>
               <div className="flex  gap-4 flex-col">
                 <input
                   type="text"

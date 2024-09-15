@@ -9,7 +9,6 @@ import {
 } from "../../interface/todoInterface";
 import { main_url } from "../../service";
 import { ErrorToast, SuccessToast } from "../../components/common/toast";
-import { UpdateData } from "../../interface/authInterface";
 
 export const CreateTodo = createAsyncThunk(
   "create-todo",

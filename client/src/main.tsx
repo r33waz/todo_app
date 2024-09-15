@@ -1,4 +1,3 @@
-import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
@@ -10,16 +9,16 @@ import { PersistGate } from "redux-persist/integration/react";
 import { Toaster } from "react-hot-toast";
 
 createRoot(document.getElementById("root")!).render(
-  <StrictMode>
+  <>
     <Provider store={store}>
-      {/* <PersistGate persistor={persisit}> */}
+      <PersistGate persistor={persisit}>
       <BrowserRouter>
         <SidebarProvider>
           <App />
         </SidebarProvider>
       </BrowserRouter>
-      {/* </PersistGate> */}
+      </PersistGate>
     </Provider>
     <Toaster position="top-right" />
-  </StrictMode>
+  </>
 );

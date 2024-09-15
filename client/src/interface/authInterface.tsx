@@ -21,6 +21,7 @@ export interface UserData {
   updateLoading: boolean;
   updateError: boolean;
   updateSuccess: boolean;
+  sessionExpired: boolean;
 }
 
 export interface UserInfo {
