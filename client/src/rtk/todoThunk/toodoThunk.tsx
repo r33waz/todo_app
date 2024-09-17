@@ -163,6 +163,7 @@ export const TodaysTodo = createAsyncThunk(
       id: string;
       data: {
         title: string;
+        completed: boolean;
       };
     },
     { rejectWithValue }
@@ -171,7 +172,7 @@ export const TodaysTodo = createAsyncThunk(
       const resp = await main_url.get(
         `/today-todo/search?userId=${id}&title=${
           data?.title ? data?.title : ""
-        }`
+        }&completed=${data?.completed ? data?.completed : ""}`
       );
       console.log("first", resp.data.data);
       return resp.data.data;

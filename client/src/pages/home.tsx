@@ -33,12 +33,12 @@ function Home() {
   });
 
   useEffect(() => {
-      dispatch(
-        GetAllTodo({
-          userId: user?._id ?? "",
-          data: filters,
-        })
-      );
+    dispatch(
+      GetAllTodo({
+        userId: user?._id ?? "",
+        data: filters,
+      })
+    );
   }, [dispatch]);
 
   const handleFilterChange = (
@@ -134,7 +134,7 @@ function Home() {
               {data?.list?.map((item, idx) => (
                 <div
                   key={idx}
-                  className={`flex flex-col mt-8 border p-3 rounded-xl hover:shadow-[0px_1px_2px_1px_#00000024] duration-500 hover:scale-100 md:gap-5 gap-2 relative bg-white`}
+                  className={`flex flex-col mt-8 border p-3 rounded-xl hover:shadow-[0px_1px_2px_1px_#00000024] duration-500 hover:scale-100 md:gap-5 gap-2 relative bg-white w-full`}
                 >
                   <span
                     className={`md:w-24 rounded-t-lg px-2 py-0.5 text-sm font-light text-white text-center absolute right-2 -top-6  z-10 duration-500 ${
@@ -151,12 +151,16 @@ function Home() {
                       ? "Pending"
                       : "Upcoming"}
                   </span>
-                  <div className="flex md:items-center w-full justify-between">
-                    <div className="flex flex-col gap">
-                      <h1 className="text-xl font-medium">{item?.title}</h1>
-                      <p>{item?.description}</p>
+                  <div className="flex md:items-center w-full md:justify-between md:flex-row flex-col items-start gap-2.5">
+                    <div className="flex flex-col gap ">
+                      <h1 className=" font-medium md:text-lg text-sm">
+                        {item?.title}
+                      </h1>
+                      <p className="md:text-base text-xs">
+                        {item?.description}
+                      </p>
                     </div>
-                    <div className="flex items-center gap-2 md:flex-row flex-col justify-center">
+                    <div className="flex items-center gap-2   justify-center">
                       <EiditTodo task={item} refreshTodos={refreshTodos} />
                       <span
                         className="cursor-pointer"
@@ -188,7 +192,6 @@ function Home() {
                           </svg>
                         )}
                       </span>
-
                       <Dialog
                         open={isDialogOpen}
                         onOpenChange={setIsDialogOpen}
@@ -236,7 +239,7 @@ function Home() {
                       </Dialog>
                     </div>
                   </div>
-                  <div className="flex gap-4 md:items-center md:justify-normal justify-between w-full">
+                  <div className="flex gap-4 md:items-center md:justify-normal justify-between w-full md:mt-0 mt-2.5">
                     <div className="flex gap-1 items-center">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"

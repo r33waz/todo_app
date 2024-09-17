@@ -353,24 +353,32 @@ export const ImportantTask = async (req, res) => {
 //todays todo
 export const GetTodayTodo = async (req, res) => {
   try {
-    const { title, userId } = req.query;
+    const { title, userId, completed } = req.query;
 
-    const today = new Date();
-    today.setUTCHours(0, 0, 0, 0);
+    const startOfDay = new Date();
+    startOfDay.setUTCHours(0, 0, 0, 0);
+
+    const endOfDay = new Date();
+    endOfDay.setUTCHours(23, 59, 59, 999);
+
     const query = {
       userId,
-      date: { $gte: today },
+      date: { $gte: startOfDay, $lt: endOfDay }, 
     };
 
     if (title) {
-      query.title = { $regex: title, $options: "i" };
+      query.title = { $regex: title, $options: "i" }; 
+    }
+
+    if (completed) {
+      query.completed = completed === "true"; 
     }
 
     const todo = await ToDo.find(query);
 
     res.status(200).json({
       success: true,
-      todo,
+      data: todo,
     });
   } catch (error) {
     console.error(error);
