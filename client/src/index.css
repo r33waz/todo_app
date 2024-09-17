@@ -152,7 +152,7 @@ body {
   /* Small screens */
   .custom-calendar {
     --rdp-day-height: 30px;
-    --rdp-day-width: 30px;
+    --rdp-day-width: 55px;
     --rdp-weekday-padding: 4px;
     --rdp-month_caption-font: "Arial, sans-serif";
     --rdp-weekday-font: "Arial, sans-serif";

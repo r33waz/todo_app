@@ -80,16 +80,48 @@ function EditTodo({
   };
 
   return (
-    <div className="flex items-center gap-1">
+    <div className="flex items-center gap-1 ">
       <Button
-        className={`p-1 text-xs rounded-lg text-white ${
-          watchedCompleted ? "bg-green-500" : "bg-gray-500"
-        }`}
+        className={` md:p-3 rounded-lg text-white`}
         onClick={toggleCompletion}
       >
-        {watchedCompleted ? "Mark as Incomplete" : "Mark as Completed"}
-      </Button>
+        {/* Text for medium and larger screens */}
+        <span
+          className={`hidden sm:inline p-1 rounded-md text-xs  ${
+            watchedCompleted ? "bg-green-500 " : "bg-gray-500"
+          }`}
+        >
+          {watchedCompleted ? "Mark as Incomplete" : "Mark as Completed"}
+        </span>
 
+        {/* Icon for small screens */}
+        <span className="inline sm:hidden">
+          {watchedCompleted ? (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="32"
+              height="32"
+              viewBox="0 0 24 24"
+              className="text-green-500"
+            >
+              <path
+                fill="currentColor"
+                d="m10.562 15.908l6.396-6.396l-.708-.708l-5.688 5.688l-2.85-2.85l-.708.708zM12.003 21q-1.866 0-3.51-.708q-1.643-.709-2.859-1.924t-1.925-2.856T3 12.003t.709-3.51Q4.417 6.85 5.63 5.634t2.857-1.925T11.997 3t3.51.709q1.643.708 2.859 1.922t1.925 2.857t.709 3.509t-.708 3.51t-1.924 2.859t-2.856 1.925t-3.509.709"
+              />
+            </svg> // Icon for incomplete
+          ) : (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="32"
+              height="32"
+              viewBox="0 0 24 24"
+              className="text-gray-500"
+            >
+              <path fill="currentColor" d="M4 20V4h16v16zm1-1h14V5H5z" />
+            </svg> // Icon for completed
+          )}
+        </span>
+      </Button>
       <Dialog>
         <DialogTrigger>
           <svg
@@ -148,6 +180,7 @@ function EditTodo({
           </form>
         </DialogContent>
       </Dialog>
+      
     </div>
   );
 }
