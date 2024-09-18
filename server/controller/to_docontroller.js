@@ -94,7 +94,7 @@ export const UpdateTodo = async (req, res) => {
     const { title, description, completed, date, time } = req.body;
 
     // Find the existing task in the database
-    const existingTodo = await ToDo.findById(id)
+    const existingTodo = await ToDo.findById(id);
 
     if (!existingTodo) {
       return res.status(404).json({
@@ -202,12 +202,12 @@ export const FilterTodo = async (req, res) => {
     if (title) {
       query.title = { $regex: title, $options: "i" };
     }
-    let todos = await ToDo.find(query).sort({createdAt: -1 }) 
+    let todos = await ToDo.find(query).sort({ createdAt: -1 });
     if (!todos || todos.length === 0) {
-      console.log("No todos found");
       return res.status(400).json({
         status: 404,
         json: { success: false, message: "No todos found" },
+        data: [],
       });
     }
     const currentDate = new Date();
@@ -273,7 +273,7 @@ export const CompletedTask = async (req, res) => {
     }
 
     // Execute the query
-    const todo = await ToDo.find(query).sort({createdAt: -1 }) 
+    const todo = await ToDo.find(query).sort({ createdAt: -1 });
 
     // Send response
     res.status(200).json({
@@ -315,7 +315,7 @@ export const ImportantTask = async (req, res) => {
     }
 
     // If postId is not provided, return the filtered list of tasks
-    const todos = await ToDo.find(query).sort({createdAt: -1 }) 
+    const todos = await ToDo.find(query).sort({ createdAt: -1 });
 
     const currentDate = new Date();
     currentDate.setHours(0, 0, 0, 0);
@@ -363,18 +363,18 @@ export const GetTodayTodo = async (req, res) => {
 
     const query = {
       userId,
-      date: { $gte: startOfDay, $lt: endOfDay }, 
+      date: { $gte: startOfDay, $lt: endOfDay },
     };
 
     if (title) {
-      query.title = { $regex: title, $options: "i" }; 
+      query.title = { $regex: title, $options: "i" };
     }
 
     if (completed) {
-      query.completed = completed === "true"; 
+      query.completed = completed === "true";
     }
 
-    const todo = await ToDo.find(query).sort({createdAt: -1 }) 
+    const todo = await ToDo.find(query).sort({ createdAt: -1 });
 
     res.status(200).json({
       success: true,
@@ -411,7 +411,7 @@ export const UpComingTask = async (req, res) => {
       query.important = important === "true";
     }
 
-    const todos = await ToDo.find(query).sort({createdAt: -1 }) 
+    const todos = await ToDo.find(query).sort({ createdAt: -1 });
 
     const currentDate = new Date();
     currentDate.setHours(0, 0, 0, 0);
