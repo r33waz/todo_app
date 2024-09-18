@@ -16,7 +16,7 @@ export const CreateTodo = createAsyncThunk(
   async ({ data, userId }: { data: CreateTodoInterface; userId: string }) => {
     console.log("create todo", data);
     try {
-      const resp = await main_url.post("/createTodo", {
+      const resp = await main_url.post("/api/v1/createTodo", {
         ...data,
         userId,
       });
@@ -38,7 +38,7 @@ export const GetAllTodo = createAsyncThunk(
   ) => {
     try {
       const resp = await main_url.get(
-        `/todos/search?userId=${userId}&title=${
+        `/api/v1/todos/search?userId=${userId}&title=${
           data?.title ? data?.title : ""
         }&completed=${data?.completed ? data?.completed : ""}&important=${
           data?.important ? data?.important : ""
@@ -77,7 +77,7 @@ export const CompletedTodo = createAsyncThunk(
   ) => {
     try {
       const resp = await main_url.get(
-        `/completed-todo/search?userId=${userId}&title=${
+        `/api/v1/completed-todo/search?userId=${userId}&title=${
           data?.title ? data?.title : ""
         }&important=${data?.important ? data?.important : ""}&date=${
           data?.date ? data?.date : ""
@@ -119,7 +119,7 @@ export const TogleImportant = createAsyncThunk(
   "togle/important",
   async ({ id }: { id: string }, { rejectWithValue }) => {
     try {
-      const resp = await main_url.patch(`/toggle-todo/${id}`);
+      const resp = await main_url.patch(`/api/v1/toggle-todo/${id}`);
       SuccessToast({ message: resp?.data?.message });
       return resp.data.data;
     } catch (error) {
@@ -152,7 +152,7 @@ export const UpcommingTodo = createAsyncThunk(
   ) => {
     try {
       const resp = await main_url.get(
-        `/upcomming-task/search?userId=${id}&title=${
+        `/api/v1/upcomming-task/search?userId=${id}&title=${
           data?.title ? data?.title : ""
         }&important=${data?.important ? data?.important : ""}&date=${
           data?.date ? data?.date : ""
@@ -184,7 +184,7 @@ export const TodaysTodo = createAsyncThunk(
   ) => {
     try {
       const resp = await main_url.get(
-        `/today-todo/search?userId=${id}&title=${
+        `/api/v1/today-todo/search?userId=${id}&title=${
           data?.title ? data?.title : ""
         }&completed=${data?.completed ? data?.completed : ""}`
       );
@@ -204,7 +204,7 @@ export const UpdateTodo = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      const resp = await main_url.patch(`/update-todo/${id}`, data);
+      const resp = await main_url.patch(`/api/v1/update-todo/${id}`, data);
       SuccessToast({ message: resp?.data?.message });
       return resp.data.data;
     } catch (error) {
