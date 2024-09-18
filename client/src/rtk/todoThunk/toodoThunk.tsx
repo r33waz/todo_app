@@ -24,7 +24,9 @@ export const CreateTodo = createAsyncThunk(
       SuccessToast({ message: resp.data?.message });
       return resp.data.data;
     } catch (error) {
-      console.log(error);
+      console.log(error)
+      return error
+
     }
   }
 );
