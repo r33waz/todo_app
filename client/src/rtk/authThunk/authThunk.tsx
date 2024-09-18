@@ -12,7 +12,7 @@ export const LoginThunk = createAsyncThunk(
   "user/login",
   async ({ email, password }: LoginInterface, { rejectWithValue }) => {
     try {
-      const resp = await main_url.post("/api/v1/login", {
+      const resp = await main_url.post("/login", {
         email,
         password,
       });
@@ -47,7 +47,7 @@ export const RegisterThunk = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      const resp = await main_url.post("/api/v1/signup", {
+      const resp = await main_url.post("/signup", {
         username,
         email,
         password: confirmPassword,
@@ -78,7 +78,7 @@ export const SingleUser = createAsyncThunk(
   "single/user",
   async (id: string, { rejectWithValue }) => {
     try {
-      const resp = await main_url.get(`/api/v1/user/${id}`);
+      const resp = await main_url.get(`/user/${id}`);
       return resp.data.data;
     } catch (error) {
       return rejectWithValue(error);
@@ -95,7 +95,7 @@ export const UpdateUser = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      const resp = await main_url.patch(`/api/v1/update-user/${id}`, data);
+      const resp = await main_url.patch(`/update-user/${id}`, data);
       SuccessToast({ message: resp?.data?.message });
       return resp.data.data;
     } catch (error) {
@@ -125,7 +125,7 @@ export const ForgetPassword = createAsyncThunk(
   "forget/password",
   async (email: string, { rejectWithValue }) => {
     try {
-      const resp = await main_url.post("/api/v1/forget-password", { email });
+      const resp = await main_url.post("/forget-password", { email });
       SuccessToast({ message: resp?.data?.message });
     } catch (error) {
       if (error instanceof AxiosError) {
@@ -168,7 +168,7 @@ export const Resetpassword = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      const resp = await main_url.post(`/api/v1/reset-password/${id}/${token}`, {
+      const resp = await main_url.post(`/reset-password/${id}/${token}`, {
         password: data?.createpassword,
       });
       SuccessToast({ message: resp?.data?.message });
