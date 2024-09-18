@@ -42,6 +42,7 @@ const ApiInstance = (contentType: string) => {
         window.location.href = "/"; // Change to your login page
       } else {
         // Handle general authentication failures
+        window.location.href = "/"; 
       }
 
       // Reject the error so that it can be handled by the calling code
