@@ -4,7 +4,7 @@ import axios from "axios";
 const ApiInstance = (contentType: string) => {
   const instance = axios.create({
     baseURL: `${import.meta.env.VITE_SERVER_URL}`, // Use your environment variable
-    timeout: 5000,
+    timeout: 10000,
     headers: {
       "Content-Type": contentType,
     },
