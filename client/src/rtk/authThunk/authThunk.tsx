@@ -22,17 +22,18 @@ export const LoginThunk = createAsyncThunk(
     } catch (error) {
       // Ensure the error is of type AxiosError
       if (error instanceof AxiosError) {
-        console.log("Full error details:", error); // Log the complete error object for debugging
-      
+        console.log("error", error);
+        
+        // Check if error has a response
         if (error.response) {
-          console.log('Backend error response:', error.response); // Log the entire response object
-          ErrorToast({ message: error.response.data?.message || "An error occurred" });
+          ErrorToast({ message: error.response.data?.message||error.response.data?.json.message });
         } else {
           ErrorToast({ message: "An unexpected error occurred" });
         }
-      
+
         return rejectWithValue(error.response?.data);
       } else {
+        // For non-Axios errors, you can handle them separately
         ErrorToast({ message: "An unknown error occurred" });
         return rejectWithValue(error);
       }
