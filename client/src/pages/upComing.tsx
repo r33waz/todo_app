@@ -18,6 +18,7 @@ import {
 import { Button } from "../components/common/button";
 import { Loading } from "../components/common/loading";
 import EiditTodo from "../components/eiditTodo";
+import { ActionButton } from "../components/common/actinButton";
 
 function UpComingTask() {
   const dispatch = useAppDispatch();
@@ -144,10 +145,14 @@ function UpComingTask() {
                   </span>
                   <div className="flex md:items-center w-full md:justify-between md:flex-row flex-col items-start gap-2.5">
                     <div className="flex flex-col gap ">
-                      <h1 className=" font-medium md:text-lg text-sm">{item?.title}</h1>
-                      <p className="md:text-base text-xs">{item?.description}</p>
+                      <h1 className=" font-medium md:text-lg text-sm">
+                        {item?.title}
+                      </h1>
+                      <p className="md:text-base text-xs">
+                        {item?.description}
+                      </p>
                     </div>
-                    <div className="flex items-center gap-2 md:flex-col flex-row justify-center">
+                    <div className="flex items-center gap-2   justify-center">
                       <EiditTodo task={item} refreshTodos={refreshTodos} />
                       <span
                         className="cursor-pointer"
@@ -212,13 +217,13 @@ function UpComingTask() {
                                 <Button className="rounded-lg px-2 py-0.5 bg-gray-500 text-white text-sm font-light">
                                   Cancel
                                 </Button>
-                                <Button
+                                <ActionButton
                                   type="button"
                                   className="btn bg-red-500 hover:bg-red-600 text-white rounded-lg px-2 py-0.5 text-sm font-light"
                                   onClick={() => deleteTodo(item?._id)}
                                 >
                                   Delete
-                                </Button>
+                                </ActionButton>
                               </div>
                             </DialogClose>
                           </DialogFooter>

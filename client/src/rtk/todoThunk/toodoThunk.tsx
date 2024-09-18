@@ -9,6 +9,7 @@ import {
 } from "../../interface/todoInterface";
 import { main_url } from "../../service";
 import { ErrorToast, SuccessToast } from "../../components/common/toast";
+import { AxiosError } from "axios";
 
 export const CreateTodo = createAsyncThunk(
   "create-todo",
@@ -46,9 +47,22 @@ export const GetAllTodo = createAsyncThunk(
       console.log(resp.data.data);
       return resp.data.data;
     } catch (error) {
-      console.log(error);
-      ErrorToast({ message: error.response.data.message });
-      return rejectWithValue(error);
+      if (error instanceof AxiosError) {
+        console.log("error", error);
+        
+        // Check if error has a response
+        if (error.response) {
+          ErrorToast({ message: error.response.data?.message });
+        } else {
+          ErrorToast({ message: "An unexpected error occurred" });
+        }
+
+        return rejectWithValue(error.response?.data);
+      } else {
+        // For non-Axios errors, you can handle them separately
+        ErrorToast({ message: "An unknown error occurred" });
+        return rejectWithValue(error);
+      }
     }
   }
 );

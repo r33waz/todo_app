@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
 import User from "../model/user.model.js";
 import jwt from "jsonwebtoken";
+import sendEmail from "../utils/sendmail.js";
 
 export const userSignup = async (req, res) => {
   try {
@@ -259,7 +260,7 @@ export const ForgetPassword = async (req, res) => {
     }
 
     if (user) {
-      const token = jwt.sign({ _id: user?._id }, process.env.JWT_SWCRET_KEY, {
+      const token = jwt.sign({ _id: user?._id },  process.env.JWT_TOKEN, {
         expiresIn: "5m",
       });
       const setUserToken = await User.findByIdAndUpdate(
@@ -268,8 +269,8 @@ export const ForgetPassword = async (req, res) => {
         { new: true }
       );
       if (setUserToken) {
-        const URL = `${process.env.BASE_URL}/ressetPassword/${user?._id}/${token}`;
-        const message = `<p>Dear ${user.firstname} ${user.lastname},</p><br>
+        const URL = `${process.env.CLIENT_URL}/resetPassword/${user?._id}/${token}`;
+        const message = `<p>Dear ${user.username},</p><br>
   <p>We have received a request to reset your password for your account.<br> If you did not request a password reset, please ignore this email.</p>
   <p>To reset your password, please click the link below:</p>
   <p >Note :<span style="color: red ;">that link expires in 5 minutes</span></p>
@@ -291,29 +292,13 @@ export const ForgetPassword = async (req, res) => {
 };
 
 export const ResetPassword = async (req, res) => {
-  const { id, token } = req.parems;
-  try {
-    const validateUser = await User.findOne({ _id: id, verifytoken: token });
-    const verifyToken = jwt.verify(token, process.env.JWT_SWCRET_KEY);
-    if (!validateUser && !verifyToken) {
-      return res.status(400).json({
-        status: false,
-        message: "Invalid Attempt",
-      });
-    }
-  } catch (error) {
-    res.status(401).json({ status: 401, message: "Token expired" });
-  }
-};
-
-export const SetPassword = async (req, res) => {
   const { id, token } = req.params;
   const { password } = req.body;
   console.log(password);
   try {
     const validuser = await User.findOne({ _id: id, verifytoken: token });
 
-    const verifyToken = jwt.verify(token, process.env.JWT_SWCRET_KEY);
+    const verifyToken = jwt.verify(token, process.env.JWT_TOKEN);
 
     if (validuser && verifyToken._id) {
       const newpassword = await bcrypt.hash(password, 10);
@@ -345,3 +330,4 @@ export const SetPassword = async (req, res) => {
     
   }
 };
+

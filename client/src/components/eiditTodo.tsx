@@ -12,6 +12,7 @@ import { TimeConverter, TimeConverter24to12 } from "../hooks/timeConverter";
 import { useAppDispatch } from "../hooks/hooks";
 import { UpdateTodo } from "../rtk/todoThunk/toodoThunk";
 import { useEffect } from "react";
+import { ActionButton } from "./common/actinButton";
 
 function EditTodo({
   task,
@@ -81,7 +82,7 @@ function EditTodo({
 
   return (
     <div className="flex items-center gap-1 ">
-      <Button
+      <ActionButton
         className={` md:p-3 rounded-lg text-white`}
         onClick={toggleCompletion}
       >
@@ -121,7 +122,7 @@ function EditTodo({
             </svg> // Icon for completed
           )}
         </span>
-      </Button>
+      </ActionButton>
       <Dialog>
         <DialogTrigger>
           <svg

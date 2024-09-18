@@ -1,5 +1,4 @@
 import axios from "axios";
-import { ErrorToast } from "../components/common/toast";
 
 // Function to create Axios instance
 const ApiInstance = (contentType: string) => {
@@ -40,10 +39,7 @@ const ApiInstance = (contentType: string) => {
         }, 1000);
       } else if (response.status === 401) {
         // Handle unauthorized access (from JsonWebTokenError on the frontend)
-        setTimeout(() => {
-          localStorage.removeItem("token");
-          window.location.href = "/"; // Change to your login page
-        }, 1000); // 2-second delay for user experience
+        window.location.href = "/"; // Change to your login page
       } else {
         // Handle general authentication failures
       }

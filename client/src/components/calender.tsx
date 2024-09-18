@@ -1,18 +1,14 @@
 import { useState } from "react";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/style.css"; // Import default styles
-import { format} from "date-fns";
 
 function Calendar() {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
-const [formattedDate, setFormattedDate] = useState<string | undefined>(undefined);
 const handleDayPickerSelect = (date: Date | undefined) => {
   if (!date) {
     setSelectedDate(undefined);
-    setFormattedDate(undefined);
   } else {
     setSelectedDate(date);
-    setFormattedDate(format(date, "yyyy/MM/dd"));
   }
 };
 

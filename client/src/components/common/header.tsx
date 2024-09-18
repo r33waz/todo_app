@@ -26,6 +26,7 @@ import { useForm } from "react-hook-form";
 import { CreateTodoInterface } from "../../interface/todoInterface";
 import { CreateTodo, GetAllTodo } from "../../rtk/todoThunk/toodoThunk";
 import {TimeConverter} from "../../hooks/timeConverter";
+import { ActionButton } from "./actinButton";
 
 function Header() {
   const navigate = useNavigate();
@@ -208,17 +209,17 @@ function Header() {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
-              <Button className="" onClick={editProfile}>
+              <ActionButton className="" onClick={editProfile}>
                 Edit Profile
-              </Button>
+              </ActionButton>
             </DropdownMenuItem>
             <DropdownMenuItem>
-              <Button
+              <ActionButton
                 className="bg-btn_bg text-white py-2 rounded-lg hover:scale-95 w-full duration-300 hover:bg-btn_bg/80 font-medium flex justify-center"
                 onClick={handleLogOut}
               >
                 Logout
-              </Button>
+              </ActionButton>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
