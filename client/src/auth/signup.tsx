@@ -2,12 +2,13 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { Button } from "../components/common/button";
-import { Link, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import LoginPng from "../assets/gif/Sign up.gif";
 import { useEffect, useState } from "react";
 import { RegisterInterface } from "../interface/authInterface";
 import { useAppDispatch, useAppSelector } from "../hooks/hooks";
 import { RegisterThunk } from "../rtk/authThunk/authThunk";
+import { ActionButton } from "../components/common/actinButton";
 
 function Signup() {
   const [showPass, setShowPass] = useState<boolean>(false);
@@ -359,12 +360,12 @@ function Signup() {
             <p className="mr-3 md:mr-0 text-btn_bg">
               Already have an account..
             </p>
-            <Button
+            <ActionButton
               className="r text-white bg-btn_bg  rounded-lg py-2 px-5 hover:scale-110   duration-300 text-xs"
               onClick={() => navigate("/")}
             >
               Login
-            </Button>
+            </ActionButton>
           </div>
         </div>
         <div className="md:block hidden w-1/2  h-[500px]">

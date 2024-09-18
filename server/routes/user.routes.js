@@ -3,7 +3,6 @@ import {
   ForgetPassword,
   getUserById,
   ResetPassword,
-  SetPassword,
   updateUser,
   userLogin,
   userSignup,
@@ -15,7 +14,6 @@ router.post("/login", userLogin);
 router.get("/user/:id", getUserById);
 router.patch("/update-user/:id", updateUser);
 router.post("/forget-password", ForgetPassword);
-router.get("/reset-password/:id/:token", ResetPassword);
-router.post("/set-password/:id/:token", SetPassword);
+router.post("/reset-password/:id/:token", ResetPassword);
 
 export default router;

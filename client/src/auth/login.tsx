@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks/hooks";
 import { LoginInterface } from "../interface/authInterface";
 import { LoginThunk } from "../rtk/authThunk/authThunk";
+import { ActionButton } from "../components/common/actinButton";
 
 function Login() {
   const [showPass, setShowPass] = useState<boolean>(false);
@@ -298,12 +299,12 @@ function Login() {
             <p className="mr-3 md:mr-0 text-btn_bg">
               If you don't have an account..
             </p>
-            <Button
+            <ActionButton
               className="r text-white bg-btn_bg  rounded-lg py-2 px-5 hover:scale-110   duration-300 text-xs"
               onClick={() => navigate("/signup")}
             >
               Register
-            </Button>
+            </ActionButton>
           </div>
         </div>
         <div className="md:block hidden w-1/2  h-[500px]">

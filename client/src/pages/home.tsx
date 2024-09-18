@@ -18,6 +18,7 @@ import {
 import { Button } from "../components/common/button";
 import EiditTodo from "../components/eiditTodo";
 import { Loading } from "../components/common/loading";
+import { ActionButton } from "../components/common/actinButton";
 
 function Home() {
   const dispatch = useAppDispatch();
@@ -39,7 +40,7 @@ function Home() {
         data: filters,
       })
     );
-  }, [dispatch]);
+  }, [dispatch, filters, user?._id]);
 
   const handleFilterChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -225,13 +226,13 @@ function Home() {
                                 <Button className="rounded-lg px-2 py-0.5 bg-gray-500 text-white text-sm font-light">
                                   Cancel
                                 </Button>
-                                <Button
+                                <ActionButton
                                   type="button"
                                   className="btn bg-red-500 hover:bg-red-600 text-white rounded-lg px-2 py-0.5 text-sm font-light"
                                   onClick={() => deleteTodo(item?._id)}
                                 >
                                   Delete
-                                </Button>
+                                </ActionButton>
                               </div>
                             </DialogClose>
                           </DialogFooter>

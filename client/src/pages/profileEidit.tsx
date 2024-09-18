@@ -10,10 +10,11 @@ import {
 import { useForm } from "react-hook-form";
 import { Button } from "../components/common/button";
 import { UpdateData } from "../interface/authInterface";
+import { Link } from "react-router-dom";
 
 function ProfileEidit() {
   const dispatch = useAppDispatch();
-  const { user, updateLoading, updateSuccess } = useAppSelector(
+  const { user, updateLoading } = useAppSelector(
     (state) => state.auth
   );
 
@@ -109,6 +110,9 @@ function ProfileEidit() {
             </AccordionContent>
           </AccordionItem>
         </Accordion>
+        <div className=" text-xs  py-5   text-btn_bg">
+          <Link to="/forgetpassword">Forget password?</Link>
+        </div>
         <Button
           className="bg-btn_bg text-white py-2 rounded-lg hover:scale-95 duration-300 hover:bg-btn_bg/80 flex justify-center"
           type="submit"

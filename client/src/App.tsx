@@ -13,6 +13,7 @@ import Login from "./auth/login";
 import Signup from "./auth/signup";
 import Forgetpasword from "./auth/forgetpasword";
 import PagenotFound from "./auth/pagenotFound";
+import ResetPassword from "./auth/resetPassword";
 
 const routesWithSideNav = [
   { path: "/home", element: <Home /> },
@@ -30,6 +31,7 @@ function App() {
       <Route path="/" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/forgetpassword" element={<Forgetpasword />} />
+      <Route path="/resetPassword/:id/:token" element={<ResetPassword />} />
       {/* Routes that include SideNav, Weather, and Calendar */}
       {routesWithSideNav.map(({ path, element }) => (
         <Route

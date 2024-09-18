@@ -208,7 +208,7 @@ function Weather() {
             {iconUrl ? (
               <img
                 src={iconUrl}
-                alt={data?.weather[0] ?? "Weather icon"}
+                alt={"Weather icon"}
                 className="w-40 h-24 object-cover"
               />
             ) : (
