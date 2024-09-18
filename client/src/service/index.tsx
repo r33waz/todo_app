@@ -4,7 +4,7 @@ import axios from "axios";
 const ApiInstance = (contentType: string) => {
   const instance = axios.create({
     baseURL: `${import.meta.env.VITE_SERVER_URL}`, // Use your environment variable
-    timeout: 10000,
+    timeout: 5000,
     headers: {
       "Content-Type": contentType,
     },
@@ -42,7 +42,6 @@ const ApiInstance = (contentType: string) => {
         window.location.href = "/"; // Change to your login page
       } else {
         // Handle general authentication failures
-        window.location.href = "/"; 
       }
 
       // Reject the error so that it can be handled by the calling code

@@ -26,7 +26,7 @@ export const LoginThunk = createAsyncThunk(
         
         // Check if error has a response
         if (error.response) {
-          ErrorToast({ message: error.response.data?.message });
+          ErrorToast({ message: error.response.data?.json.message });
         } else {
           ErrorToast({ message: "An unexpected error occurred" });
         }
@@ -59,7 +59,7 @@ export const RegisterThunk = createAsyncThunk(
         
         // Check if error has a response
         if (error.response) {
-          ErrorToast({ message: error.response.data?.message });
+          ErrorToast({ message: error.response.data?.json.message });
         } else {
           ErrorToast({ message: "An unexpected error occurred" });
         }
@@ -104,7 +104,7 @@ export const UpdateUser = createAsyncThunk(
         
         // Check if error has a response
         if (error.response) {
-          ErrorToast({ message: error.response.data?.message });
+          ErrorToast({ message: error.response.data?.json.message });
         } else {
           ErrorToast({ message: "An unexpected error occurred" });
         }
@@ -133,7 +133,7 @@ export const ForgetPassword = createAsyncThunk(
         
         // Check if error has a response
         if (error.response) {
-          ErrorToast({ message: error.response.data?.message });
+          ErrorToast({ message: error.response.data?.json.message });
         } else {
           ErrorToast({ message: "An unexpected error occurred" });
         }
@@ -179,7 +179,7 @@ export const Resetpassword = createAsyncThunk(
         
         // Check if error has a response
         if (error.response) {
-          ErrorToast({ message: error.response.data?.message });
+          ErrorToast({ message: error.response.data?.json.message });
         } else {
           ErrorToast({ message: "An unexpected error occurred" });
         }

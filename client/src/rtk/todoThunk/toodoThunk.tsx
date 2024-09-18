@@ -52,7 +52,7 @@ export const GetAllTodo = createAsyncThunk(
         
         // Check if error has a response
         if (error.response) {
-          ErrorToast({ message: error.response.data?.message });
+          ErrorToast({ message: error.response.data?.json.message });
         } else {
           ErrorToast({ message: "An unexpected error occurred" });
         }
