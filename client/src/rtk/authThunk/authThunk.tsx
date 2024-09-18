@@ -26,7 +26,8 @@ export const LoginThunk = createAsyncThunk(
         
         // Check if error has a response
         if (error.response) {
-          ErrorToast({ message: error.response.data?.json.message });
+          console.log('Backend error response:', error.response.data); // Add this line for debugging
+          ErrorToast({ message: error.response.data?.message || "An error occurred" });
         } else {
           ErrorToast({ message: "An unexpected error occurred" });
         }
@@ -59,7 +60,7 @@ export const RegisterThunk = createAsyncThunk(
         
         // Check if error has a response
         if (error.response) {
-          ErrorToast({ message: error.response.data?.json.message });
+          ErrorToast({ message: error.response.data?.message||error.response.data?.json.message });
         } else {
           ErrorToast({ message: "An unexpected error occurred" });
         }
@@ -104,7 +105,7 @@ export const UpdateUser = createAsyncThunk(
         
         // Check if error has a response
         if (error.response) {
-          ErrorToast({ message: error.response.data?.json.message });
+          ErrorToast({ message: error.response.data?.message||error.response.data?.json.message });
         } else {
           ErrorToast({ message: "An unexpected error occurred" });
         }
@@ -133,7 +134,7 @@ export const ForgetPassword = createAsyncThunk(
         
         // Check if error has a response
         if (error.response) {
-          ErrorToast({ message: error.response.data?.json.message });
+          ErrorToast({ message: error.response.data?.message||error.response.data?.json.message });
         } else {
           ErrorToast({ message: "An unexpected error occurred" });
         }
@@ -179,7 +180,7 @@ export const Resetpassword = createAsyncThunk(
         
         // Check if error has a response
         if (error.response) {
-          ErrorToast({ message: error.response.data?.json.message });
+          ErrorToast({ message: error.response.data?.message||error.response.data?.json.message });
         } else {
           ErrorToast({ message: "An unexpected error occurred" });
         }
