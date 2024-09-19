@@ -22,7 +22,7 @@ export const LoginThunk = createAsyncThunk(
     } catch (error) {
       // Ensure the error is of type AxiosError
       if (error instanceof AxiosError) {
-        console.log("error", error);
+        
         
         // Check if error has a response
         if (error.response) {
@@ -55,7 +55,7 @@ export const RegisterThunk = createAsyncThunk(
       return resp.data.data;
     } catch (error) {
       if (error instanceof AxiosError) {
-        console.log("error", error);
+        
         
         // Check if error has a response
         if (error.response) {
@@ -100,7 +100,7 @@ export const UpdateUser = createAsyncThunk(
       return resp.data.data;
     } catch (error) {
       if (error instanceof AxiosError) {
-        console.log("error", error);
+        
         
         // Check if error has a response
         if (error.response) {
@@ -129,7 +129,7 @@ export const ForgetPassword = createAsyncThunk(
       SuccessToast({ message: resp?.data?.message });
     } catch (error) {
       if (error instanceof AxiosError) {
-        console.log("error", error);
+        
         
         // Check if error has a response
         if (error.response) {
@@ -175,7 +175,7 @@ export const Resetpassword = createAsyncThunk(
       return resp.data.data;
     } catch (error) {
         if (error instanceof AxiosError) {
-        console.log("error", error);
+        
         
         // Check if error has a response
         if (error.response) {

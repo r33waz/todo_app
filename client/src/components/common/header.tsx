@@ -56,9 +56,7 @@ function Header() {
   const OnSubmit = async (data: CreateTodoInterface) => {
     try {
       if (user?._id) {
-        console.log("Raw Time:", data.time); // Debugging
         const formattedTime = TimeConverter(data.time ?? "");
-        console.log("Formatted Time:", formattedTime); // Debugging
 
         await dispatch(
           CreateTodo({

@@ -14,17 +14,14 @@ import { AxiosError } from "axios";
 export const CreateTodo = createAsyncThunk(
   "create-todo",
   async ({ data, userId }: { data: CreateTodoInterface; userId: string }) => {
-    console.log("create todo", data);
     try {
       const resp = await main_url.post("api/v1/createTodo", {
         ...data,
         userId,
       });
-      console.log(resp.data.data);
       SuccessToast({ message: resp.data?.message });
       return resp.data.data;
     } catch (error) {
-      console.log(error)
       return error
 
     }
@@ -46,11 +43,9 @@ export const GetAllTodo = createAsyncThunk(
           data?.important ? data?.important : ""
         }&date=${data?.date ? data?.date : ""}`
       );
-      console.log(resp.data.data);
       return resp.data.data;
     } catch (error) {
       if (error instanceof AxiosError) {
-        console.log("error", error);
         
         // Check if error has a response
         if (error.response) {
@@ -85,7 +80,6 @@ export const CompletedTodo = createAsyncThunk(
           data?.date ? data?.date : ""
         }`
       );
-      console.log(resp.data.data);
       return resp.data.data;
     } catch (error) {
       return rejectWithValue(error);
@@ -109,7 +103,6 @@ export const ImportantTodo = createAsyncThunk(
           data?.date ? data?.date : ""
         }`
       );
-      console.log(resp.data.data);
       return resp.data.data;
     } catch (error) {
       return rejectWithValue(error);
@@ -160,7 +153,6 @@ export const UpcommingTodo = createAsyncThunk(
           data?.date ? data?.date : ""
         }`
       );
-      console.log("first", resp.data.data);
       return resp.data.data;
     } catch (error) {
       return rejectWithValue(error);
@@ -190,7 +182,6 @@ export const TodaysTodo = createAsyncThunk(
           data?.title ? data?.title : ""
         }&completed=${data?.completed ? data?.completed : ""}`
       );
-      console.log("first", resp.data.data);
       return resp.data.data;
     } catch (error) {
       return rejectWithValue(error);

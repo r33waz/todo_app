@@ -50,7 +50,6 @@ export const CreateTodo = async (req, res) => {
       message: "Todo created successfully",
     });
   } catch (error) {
-    console.log(error);
     res.status(500).json({
       success: false,
       message: "Internal Server Error",
@@ -74,7 +73,7 @@ export const DeleteTodo = async (req, res) => {
       message: "Todo deleted successfully",
     });
   } catch (error) {
-    console.log(error);
+    
     res.status(500).json({
       success: false,
       message: "Internal Server Error",
@@ -142,7 +141,7 @@ export const UpdateTodo = async (req, res) => {
       message: "Todo updated successfully",
     });
   } catch (error) {
-    console.log(error);
+    
     res.status(500).json({
       success: false,
       message: "Internal Server Error",
@@ -166,7 +165,7 @@ export const FindSingleTodo = async (req, res) => {
       data: todo,
     });
   } catch (error) {
-    console.log(error);
+    
     res.status(500).json({
       success: false,
       message: "Internal Server Error",
@@ -177,8 +176,6 @@ export const FindSingleTodo = async (req, res) => {
 export const FilterTodo = async (req, res) => {
   try {
     // Extract query parameters from the request
-    const { userId, title, date, completed, important } = req.query;
-    console.log(userId, title, date, completed, important);
 
     // Ensure the userId is provided
     if (!userId) {
@@ -242,7 +239,6 @@ export const FilterTodo = async (req, res) => {
 export const CompletedTask = async (req, res) => {
   try {
     const { userId, title, date, important } = req.query;
-    console.log(userId, title, date, important);
 
     // Ensure the userId is valid before proceeding
     if (!userId) {
@@ -438,7 +434,7 @@ export const UpComingTask = async (req, res) => {
       data: updatedTodos,
     });
   } catch (error) {
-    console.log(error);
+    
     res.status(500).json({
       success: false,
       message: "Internal Server Error",
