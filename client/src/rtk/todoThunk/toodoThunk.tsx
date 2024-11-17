@@ -22,8 +22,7 @@ export const CreateTodo = createAsyncThunk(
       SuccessToast({ message: resp.data?.message });
       return resp.data.data;
     } catch (error) {
-      return error
-
+      return error;
     }
   }
 );
@@ -46,15 +45,12 @@ export const GetAllTodo = createAsyncThunk(
       return resp.data.data;
     } catch (error) {
       if (error instanceof AxiosError) {
-        
         // Check if error has a response
         if (error.response) {
-          ErrorToast({ message: error.response.data?.message||error.response.data?.json.message });
+          return null;
         } else {
           ErrorToast({ message: "An unexpected error occurred" });
         }
-
-        return rejectWithValue(error.response?.data);
       } else {
         // For non-Axios errors, you can handle them separately
         ErrorToast({ message: "An unknown error occurred" });
@@ -74,7 +70,7 @@ export const CompletedTodo = createAsyncThunk(
   ) => {
     try {
       const resp = await main_url.get(
-        `completed-todo/search?userId=${userId}&title=${
+        `api/v1/completed-todo/search?userId=${userId}&title=${
           data?.title ? data?.title : ""
         }&important=${data?.important ? data?.important : ""}&date=${
           data?.date ? data?.date : ""
@@ -147,7 +143,7 @@ export const UpcommingTodo = createAsyncThunk(
   ) => {
     try {
       const resp = await main_url.get(
-        `upcomming-task/search?userId=${id}&title=${
+        `api/v1/upcomming-task/search?userId=${id}&title=${
           data?.title ? data?.title : ""
         }&important=${data?.important ? data?.important : ""}&date=${
           data?.date ? data?.date : ""

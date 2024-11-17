@@ -73,7 +73,6 @@ export const DeleteTodo = async (req, res) => {
       message: "Todo deleted successfully",
     });
   } catch (error) {
-    
     res.status(500).json({
       success: false,
       message: "Internal Server Error",
@@ -82,7 +81,6 @@ export const DeleteTodo = async (req, res) => {
 };
 
 //get all todo according to the user
-export const GetAllTodo = async (req, res) => {};
 
 //completed task
 
@@ -120,13 +118,18 @@ export const UpdateTodo = async (req, res) => {
       time,
     };
 
-    if (inputDate.getTime() > today.getTime()) {
+    // Check if the task is completed
+    if (completed) {
+      updateFields.upcomming = false; // Completed tasks should not be in upcoming
+      updateFields.date = null; // Set date to null for completed tasks
+    } else if (inputDate.getTime() > today.getTime()) {
       updateFields.upcomming = true; // Future task
     } else if (inputDate.getTime() === today.getTime()) {
       updateFields.upcomming = false; // Pending task
     } else {
       updateFields.upcomming = false; // Past task
     }
+
     // Update the task in the database with the new fields
     const updatedTodo = await ToDo.findByIdAndUpdate(
       { _id: id },
@@ -139,15 +142,17 @@ export const UpdateTodo = async (req, res) => {
     res.status(200).json({
       success: true,
       message: "Todo updated successfully",
+      data: updatedTodo, // Return the updated task
     });
   } catch (error) {
-    
     res.status(500).json({
       success: false,
       message: "Internal Server Error",
+      error: error.message,
     });
   }
 };
+
 
 //find single todo
 export const FindSingleTodo = async (req, res) => {
@@ -165,7 +170,6 @@ export const FindSingleTodo = async (req, res) => {
       data: todo,
     });
   } catch (error) {
-    
     res.status(500).json({
       success: false,
       message: "Internal Server Error",
@@ -176,7 +180,7 @@ export const FindSingleTodo = async (req, res) => {
 export const FilterTodo = async (req, res) => {
   try {
     // Extract query parameters from the request
-
+    const { userId, date, completed, important, title } = req.query;
     // Ensure the userId is provided
     if (!userId) {
       return res.status(400).json({ message: "User ID is required" });
@@ -203,7 +207,7 @@ export const FilterTodo = async (req, res) => {
     if (!todos || todos.length === 0) {
       return res.status(400).json({
         status: 404,
-        json: { success: false, message: "No todos found" },
+        json: { success: false },
         data: [],
       });
     }
@@ -239,6 +243,7 @@ export const FilterTodo = async (req, res) => {
 export const CompletedTask = async (req, res) => {
   try {
     const { userId, title, date, important } = req.query;
+    console.log(userId, title, date, important);
 
     // Ensure the userId is valid before proceeding
     if (!userId) {
@@ -434,7 +439,6 @@ export const UpComingTask = async (req, res) => {
       data: updatedTodos,
     });
   } catch (error) {
-    
     res.status(500).json({
       success: false,
       message: "Internal Server Error",

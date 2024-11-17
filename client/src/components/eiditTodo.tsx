@@ -32,7 +32,7 @@ function EditTodo({
   const dispatch = useAppDispatch();
   const { _id } = task;
 
-  const formattedDate = task.date.split("T")[0];
+  const formattedDate = task.date ? task.date : "";
   const formattedTime = TimeConverter(task.time);
 
   const { register, handleSubmit, setValue, watch, getValues } = useForm({
@@ -181,7 +181,6 @@ function EditTodo({
           </form>
         </DialogContent>
       </Dialog>
-      
     </div>
   );
 }
