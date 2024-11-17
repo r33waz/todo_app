@@ -22,7 +22,6 @@ const Forgetpasword = () => {
     } else {
       setError("");
       // Proceed with form submission
-      console.log("Form submitted with email:", email);
 
       // You can send an email or perform any other action here
       dispatch(ForgetPassword(email));

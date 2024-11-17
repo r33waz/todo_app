@@ -8,7 +8,6 @@ import { Resetpassword } from "../rtk/authThunk/authThunk";
 // import { Resetpassword } from "../../../rtk/authrtk/authThunk";
 function ResetPassword() {
   const { id, token } = useParams();
-  console.log(id, token);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const newPasswordSchema = yup.object({
@@ -38,7 +37,6 @@ function ResetPassword() {
     confirmPassword: string;
     createpassword: string;
   }) => {
-    console.log(data);
     dispatch(Resetpassword({ id: id ?? "", token: token ?? "", data: data }))
       .unwrap()
       .then(() => {

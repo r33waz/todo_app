@@ -56,7 +56,6 @@ export const userSignup = async (req, res) => {
       message: "Signup Successfully",
     });
   } catch (error) {
-    console.log(error);
     // If there's an error, handle it
     if (error.name === "ValidationError") {
       // Mongoose validation error occurred
@@ -79,7 +78,6 @@ export const userSignup = async (req, res) => {
 export const userLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
-    console.log(email, password);
     if (!email) {
       return res.status(400).json({
         status: false,
@@ -152,7 +150,6 @@ export const getUserById = async (req, res) => {
       data: user,
     });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       status: false,
       message: "Internal server error",
@@ -283,7 +280,6 @@ export const ForgetPassword = async (req, res) => {
       }
     }
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       status: false,
       message: "Internal server error",
@@ -294,7 +290,6 @@ export const ForgetPassword = async (req, res) => {
 export const ResetPassword = async (req, res) => {
   const { id, token } = req.params;
   const { password } = req.body;
-  console.log(password);
   try {
     const validuser = await User.findOne({ _id: id, verifytoken: token });
 

@@ -21,7 +21,6 @@ import {
 } from "../ui/dialog";
 import { logout } from "../../rtk/authThunk/authSlice";
 import { SuccessToast } from "./toast";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { CreateTodoInterface } from "../../interface/todoInterface";
 import { CreateTodo, GetAllTodo } from "../../rtk/todoThunk/toodoThunk";
@@ -32,7 +31,6 @@ function Header() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.auth);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const handleLogOut = () => {
     dispatch(logout());
@@ -56,9 +54,7 @@ function Header() {
   const OnSubmit = async (data: CreateTodoInterface) => {
     try {
       if (user?._id) {
-        console.log("Raw Time:", data.time); // Debugging
         const formattedTime = TimeConverter(data.time ?? "");
-        console.log("Formatted Time:", formattedTime); // Debugging
 
         await dispatch(
           CreateTodo({
@@ -67,7 +63,6 @@ function Header() {
           })
         );
         reset(); // Reset form fields
-        setIsDialogOpen(false); // Close the dialog
         dispatch(
           GetAllTodo({
             userId: user?._id,
@@ -91,11 +86,11 @@ function Header() {
       </h3>
       <div className="flex items-center gap-2">
         {/* Dialog Component */}
-        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <Dialog >
           <DialogTrigger asChild>
-            <Button className="bg-btn_bg text-white text-xs p-1 rounded-md hover:scale-95 duration-500">
+            <span className="bg-btn_bg text-white text-xs p-1 rounded-md hover:scale-95 duration-500">
               New Task
-            </Button>
+            </span>
           </DialogTrigger>
           <DialogContent className="sm:max-w-md">
             <DialogHeader>

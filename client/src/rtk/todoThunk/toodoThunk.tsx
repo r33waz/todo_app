@@ -14,19 +14,15 @@ import { AxiosError } from "axios";
 export const CreateTodo = createAsyncThunk(
   "create-todo",
   async ({ data, userId }: { data: CreateTodoInterface; userId: string }) => {
-    console.log("create todo", data);
     try {
       const resp = await main_url.post("api/v1/createTodo", {
         ...data,
         userId,
       });
-      console.log(resp.data.data);
       SuccessToast({ message: resp.data?.message });
       return resp.data.data;
     } catch (error) {
-      console.log(error)
-      return error
-
+      return error;
     }
   }
 );
@@ -46,20 +42,15 @@ export const GetAllTodo = createAsyncThunk(
           data?.important ? data?.important : ""
         }&date=${data?.date ? data?.date : ""}`
       );
-      console.log(resp.data.data);
       return resp.data.data;
     } catch (error) {
       if (error instanceof AxiosError) {
-        console.log("error", error);
-        
         // Check if error has a response
         if (error.response) {
-          ErrorToast({ message: error.response.data?.message||error.response.data?.json.message });
+          return null;
         } else {
           ErrorToast({ message: "An unexpected error occurred" });
         }
-
-        return rejectWithValue(error.response?.data);
       } else {
         // For non-Axios errors, you can handle them separately
         ErrorToast({ message: "An unknown error occurred" });
@@ -79,13 +70,12 @@ export const CompletedTodo = createAsyncThunk(
   ) => {
     try {
       const resp = await main_url.get(
-        `completed-todo/search?userId=${userId}&title=${
+        `api/v1/completed-todo/search?userId=${userId}&title=${
           data?.title ? data?.title : ""
         }&important=${data?.important ? data?.important : ""}&date=${
           data?.date ? data?.date : ""
         }`
       );
-      console.log(resp.data.data);
       return resp.data.data;
     } catch (error) {
       return rejectWithValue(error);
@@ -109,7 +99,6 @@ export const ImportantTodo = createAsyncThunk(
           data?.date ? data?.date : ""
         }`
       );
-      console.log(resp.data.data);
       return resp.data.data;
     } catch (error) {
       return rejectWithValue(error);
@@ -154,13 +143,12 @@ export const UpcommingTodo = createAsyncThunk(
   ) => {
     try {
       const resp = await main_url.get(
-        `upcomming-task/search?userId=${id}&title=${
+        `api/v1/upcomming-task/search?userId=${id}&title=${
           data?.title ? data?.title : ""
         }&important=${data?.important ? data?.important : ""}&date=${
           data?.date ? data?.date : ""
         }`
       );
-      console.log("first", resp.data.data);
       return resp.data.data;
     } catch (error) {
       return rejectWithValue(error);
@@ -190,7 +178,6 @@ export const TodaysTodo = createAsyncThunk(
           data?.title ? data?.title : ""
         }&completed=${data?.completed ? data?.completed : ""}`
       );
-      console.log("first", resp.data.data);
       return resp.data.data;
     } catch (error) {
       return rejectWithValue(error);

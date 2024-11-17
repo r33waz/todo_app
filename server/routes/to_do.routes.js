@@ -5,7 +5,6 @@ import {
   DeleteTodo,
   FilterTodo,
   FindSingleTodo,
-  GetAllTodo,
   GetTodayTodo,
   ImportantTask,
   toggleImportantTask,
@@ -18,7 +17,6 @@ const router = express.Router();
 
 router.post("/createTodo", authenticate, CreateTodo);
 router.delete("/deleteTodo/:id", authenticate, DeleteTodo);
-router.get("/all_todo/:id", authenticate, GetAllTodo);
 router.get("/single_todo/:id", authenticate, FindSingleTodo);
 router.patch("/update-todo/:id", authenticate, UpdateTodo);
 router.get("/todos/search", authenticate, FilterTodo);
